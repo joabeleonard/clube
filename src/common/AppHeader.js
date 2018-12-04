@@ -6,13 +6,10 @@ import {
 import './AppHeader.css';
 import pollIcon from '../poll.svg';
 import { Layout, Menu, Dropdown, Icon } from 'antd';
-import CheeseburgerMenu from 'cheeseburger-menu';
-import HamburgerMenu from 'react-hamburger-menu';
-import MenuContent from './MenuContent'
-
 
 const Header = Layout.Header;
     
+
 class AppHeader extends Component {
     constructor(props) {
         super(props);   
@@ -72,27 +69,14 @@ class AppHeader extends Component {
         return (
             <Header className="app-header">
             <div className="container">
-
-            <CheeseburgerMenu
-              isOpen={this.state.menuOpen}
-              closeCallback={this.closeMenu.bind(this)}>
-              <MenuContent closeCallback={this.closeMenu.bind(this)}/>
-            </CheeseburgerMenu>
             
-            <HamburgerMenu
-              isOpen={this.state.menuOpen}
-              menuClicked={this.openMenu.bind(this)}
-              width={32}
-              height={24}
-              strokeWidth={3}
-              rotate={0}
-              color='black'
-              borderRadius={0}
-              animationDuration={0.5}
-            />
               <div className="app-title" >
+             
                 <Link to="/">Clube de Vantagens</Link>
+                
               </div>
+
+             
               <Menu
                 className="app-menu"
                 mode="horizontal"

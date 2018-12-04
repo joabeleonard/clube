@@ -15,13 +15,21 @@ import Login from '../user/login/Login';
 import Signup from '../user/signup/Signup';
 import Profile from '../user/profile/Profile';
 import AppHeader from '../common/AppHeader';
+import MenuContent from '../common/MenuContent';
 import NotFound from '../common/NotFound';
 import LoadingIndicator from '../common/LoadingIndicator';
 import PrivateRoute from '../common/PrivateRoute';
 
+import Clientes from '../clientes/Clientes';
+import Fornecedores from '../fornecedores/Fornecedores';
+
+
+
+
 
 import { Layout, notification } from 'antd';
 const { Content } = Layout;
+
 
 class App extends Component {
   constructor(props) {
@@ -98,9 +106,11 @@ class App extends Component {
           <AppHeader isAuthenticated={this.state.isAuthenticated} 
             currentUser={this.state.currentUser} 
             onLogout={this.handleLogout} />
-
+      
           <Content className="app-content">
             <div className="container">
+            
+            <MenuContent  currentUser={this.state.currentUser} />
               <Switch>      
                 <Route exact path="/" 
                   render={(props) => <PollList isAuthenticated={this.state.isAuthenticated} 
@@ -113,6 +123,9 @@ class App extends Component {
                   render={(props) => <Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
                 </Route>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/poll/new" component={NewPoll} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/fornecedores" component={Fornecedores} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/clientes" component={Clientes} handleLogout={this.handleLogout}></PrivateRoute>
+
                 <Route component={NotFound}></Route>
               </Switch>
             </div>
