@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import { Form, Input, InputNumber, Button, Radio, Table } from 'antd'
+import './Cliente.css';
+import {
+  Link,
+  withRouter
+} from 'react-router-dom';
 
 const FormItem = Form.Item;
+
+const Search = Input.Search;
 
 class Clientes extends Component{
 
     constructor(){
         super();
         this.state = {
-            formLayout: 'inline',
+            formLayout: 'vertical',
             search: ''};
     }
     render(){
@@ -50,31 +57,27 @@ class Clientes extends Component{
               </span>
             ),
           }];
-        return  <div>
-         <Form {...layoutProps}>
-          <FormItem
-            {...formItemLayout} >
+        return  <div className="new-client-container">
+         <h1 className="page-title">Gerenciamento de Clientes</h1>
+         <Form  layout="inline">
          
+          <FormItem >
+          <Search
+      placeholder="Pesquisar"
+      onSearch={value => console.log(value)}
+      enterButton
+    />
+          
           </FormItem>
-          <FormItem
-            label="Username"
-            {...formItemLayout}
-          >
-            <Input type="text" value={this.search} placeholder="Pesquisa"/>
-            <Button type="primary" shape="circle" icon="search" />
-
+          <FormItem >
+          <Button type="primary">
+          <Link to="/client/new">Novo Cliente
+          </Link>
+          </Button>
           </FormItem>
-          <FormItem
-            label="Age"
-            {...formItemLayout}
-          >
-        
-          </FormItem>
-          <FormItem {...buttonItemLayout}>
-            {button}
-          </FormItem>
+         
         </Form>
-        <Table rowKey={record => record.id}  {...this.state.tableConfig} columns={columns}  />
+        <Table className="tableClient" rowKey={record => record.id}  {...this.state.tableConfig} columns={columns}  />
       </div>
        
        ;

@@ -41,6 +41,14 @@ export function createPoll(pollData) {
     });
 }
 
+export function createClient(clientData) {
+    return request({
+        url: API_BASE_URL + "/clients",
+        method: 'POST',
+        body: JSON.stringify(clientData)         
+    });
+}
+
 export function castVote(voteData) {
     return request({
         url: API_BASE_URL + "/polls/" + voteData.pollId + "/votes",
