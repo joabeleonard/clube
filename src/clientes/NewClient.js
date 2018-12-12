@@ -41,6 +41,7 @@ class NewClient extends Component {
         };
         this.addChoice = this.addChoice.bind(this);
         this.removeChoice = this.removeChoice.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleQuestionChange = this.handleQuestionChange.bind(this);
         this.handleChoiceChange = this.handleChoiceChange.bind(this);
@@ -48,6 +49,19 @@ class NewClient extends Component {
         this.handlePollHoursChange = this.handlePollHoursChange.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
     }
+
+
+    
+  handleInputChange(event) {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    console.log(name);
+    console.log(value);
+    this.setState({
+      [name]: value
+    });
+  }
 
     addChoice(event) {
         const choices = this.state.choices.slice();        
@@ -68,13 +82,13 @@ class NewClient extends Component {
     handleSubmit(event) {
         event.preventDefault();
         const clientData = {
-            cpf:this.state.cpf.text,
+            cpf:this.state.cpf,
             endereco: this.state.endereco.text,
-            nome: this.state.nome.text,
-            senha: this.state.senha.text
-
-
+            nome: this.state.nome,
+            senha: this.state.senha,
+            email: this.state.email
         };
+        console.log(clientData);
 
         createClient(clientData)
         .then(response => {
@@ -197,19 +211,21 @@ class NewClient extends Component {
 
                          <FormItem>
                          <Input placeholder="Nome" name="nome"
-                          value = {this.state.nome.text} />
+                          onChange={this.handleInputChange} 
+                          />
                          </FormItem>
                          <FormItem>
                               <Input placeholder="E-mail" name="email"
-                               value = {this.state.email.text}/>         
+                               onChange={this.handleInputChange} />         
                         </FormItem>
                         <FormItem>
                               <Input placeholder="CPF" name="cpf"
-                               value = {this.state.cpf.text}/>         
+                               onChange={this.handleInputChange} />         
                         </FormItem>
         <FormItem>
-            <Input type="password" placeholder="Senha"
-             value = {this.state.senha.text}/>
+            <Input type="password" placeholder="Senha" name="senha"
+             onChange={this.handleInputChange} 
+             prefix={<Icon type="lock" />}/>
         </FormItem>
                         <FormItem validateStatus={this.state.endereco.validateStatus}
                             help={this.state.endereco.errorMsg} className="poll-form-row">

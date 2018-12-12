@@ -39,8 +39,8 @@ class LoginForm extends Component {
                 }).catch(error => {
                     if(error.status === 401) {
                         notification.error({
-                            message: 'Polling App',
-                            description: 'Your Username or Password is incorrect. Please try again!'
+                            message: 'My Pass',
+                            description: 'Usuário ou senha incorreta. Por favor tente novamente!'
                         });                    
                     } else {
                         notification.error({
@@ -59,18 +59,18 @@ class LoginForm extends Component {
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <FormItem>
                     {getFieldDecorator('usernameOrEmail', {
-                        rules: [{ required: true, message: 'Please input your username or email!' }],
+                        rules: [{ required: true, message: 'Por favor Informe o usuário ou email!' }],
                     })(
                     <Input 
                         prefix={<Icon type="user" />}
                         size="large"
                         name="usernameOrEmail" 
-                        placeholder="Usúario os senha" />    
+                        placeholder="Usúario ou email" />    
                     )}
                 </FormItem>
                 <FormItem>
                 {getFieldDecorator('password', {
-                    rules: [{ required: true, message: 'Please input your Password!' }],
+                    rules: [{ required: true, message: 'Por favor digite a senha!' }],
                 })(
                     <Input 
                         prefix={<Icon type="lock" />}
