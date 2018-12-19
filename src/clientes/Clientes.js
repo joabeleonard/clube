@@ -5,6 +5,9 @@ import {
   Link,
   withRouter
 } from 'react-router-dom';
+import { CLIENT_LIST_SIZE } from '../constants';
+import { getAllClients} from '../util/APIUtils';
+
 
 const FormItem = Form.Item;
 
@@ -12,13 +15,61 @@ const Search = Input.Search;
 
 class Clientes extends Component{
 
-    constructor(){
-        super();
-        this.state = {
-            formLayout: 'vertical',
-            search: ''};
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+        clients: [],
+        page: 0,
+        size: 10,
+        totalElements: 0,
+        totalPages: 0,
+        last: true,
+        currentVotes: [],
+        isLoading: false,
+        formLayout: 'vertical',
+            search: ''
+    };
+    this.loadClientList = this.loadClientList.bind(this);
+}
+
+loadClientList(page = 0, size = CLIENT_LIST_SIZE) {
+  let promise;
+  promise = getAllClients(page, size);
+
+  if(!promise) {
+      return;
+  }
+
+  this.setState({
+      isLoading: true
+  });
+
+  promise            
+  .then(response => {
+      const clients = this.state.clients.slice();
+
+      this.setState({
+          clients: clients.concat(response.content),
+          page: response.page,
+          size: response.size,
+          totalElements: response.totalElements,
+          totalPages: response.totalPages,
+          last: response.last,
+            isLoading: false
+      })
+  }).catch(error => {
+      this.setState({
+          isLoading: false
+      })
+  });  
+  
+}
+ 
+componentDidMount() {
+  this.loadClientList();
+}
     render(){
+      console.log("Teste"+this.state.clients);
         const { formLayout } = this.state;
 
         const layoutProps = { [formLayout]: true };
@@ -34,20 +85,19 @@ class Clientes extends Component{
           let button = null
 
           const columns = [{
-            title: 'Id',
-            dataIndex: 'id',
-            key: 'id',
+            title: 'CPF',
+            dataIndex: 'cpf',
+            key: 'cpf',
           }, {
-            title: 'Name',
-            dataIndex: 'name',
-            key: 'name',
-            render: (text) => <strong>{text}</strong>,
+            title: 'Ativo',
+            dataIndex: 'ativo',
+            key: 'ativo',
           }, {
-            title: 'Age',
-            dataIndex: 'age',
-            key: 'age',
+            title: 'Pontos',
+            dataIndex: 'pontos',
+            key: 'pontos',
           }, {
-            title: 'Action',
+            title: 'Ações',
             key: 'action',
             render: (text, record) => (
               <span>
@@ -77,7 +127,7 @@ class Clientes extends Component{
           </FormItem>
          
         </Form>
-        <Table className="tableClient" rowKey={record => record.id}  {...this.state.tableConfig} columns={columns}  />
+        <Table className="tableClient" rowKey={record => record.id} dataSource={this.state.clients} {...this.state.tableConfig} columns={columns}  />
       </div>
        
        ;

@@ -142,6 +142,8 @@ class PollList extends Component {
     }
 
     render() {
+        console.log("Teste" + this.state.polls);
+
         const pollViews = [];
         this.state.polls.forEach((poll, pollIndex) => {
             pollViews.push(<Poll 

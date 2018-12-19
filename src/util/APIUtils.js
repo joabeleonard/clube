@@ -1,4 +1,4 @@
-import { API_BASE_URL, POLL_LIST_SIZE, ACCESS_TOKEN } from '../constants';
+import { API_BASE_URL, POLL_LIST_SIZE,CLIENT_LIST_SIZE, ACCESS_TOKEN } from '../constants';
 
 const request = (options) => {
     const headers = new Headers({
@@ -29,6 +29,16 @@ export function getAllPolls(page, size) {
 
     return request({
         url: API_BASE_URL + "/polls?page=" + page + "&size=" + size,
+        method: 'GET'
+    });
+}
+
+export function getAllClients(page, size) {
+    page = page || 0;
+    size = size || CLIENT_LIST_SIZE;
+
+    return request({
+        url: API_BASE_URL + "/clients?page=" + page + "&size=" + size,
         method: 'GET'
     });
 }
