@@ -92,7 +92,11 @@ class NewClient extends Component {
 
         createClient(clientData)
         .then(response => {
-            this.props.history.push("/");
+            notification.success({
+                message: 'My pass',
+                description: "Cliente Cadastrado com sucesso.",
+              });
+            this.props.history.push("/clientes");
         }).catch(error => {
             if(error.status === 401) {
                 this.props.handleLogout('/login', 'error', 'You have been logged out. Please login create poll.');    

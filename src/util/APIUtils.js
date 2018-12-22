@@ -13,7 +13,7 @@ const request = (options) => {
     options = Object.assign({}, defaults, options);
 
     return fetch(options.url, options)
-    .then(response => 
+    .then(response =>           
         response.json().then(json => {
             if(!response.ok) {
                 return Promise.reject(json);
@@ -42,6 +42,14 @@ export function getAllClients(page, size) {
         method: 'GET'
     });
 }
+
+export function removeClient(id) {
+     return request({
+        url: API_BASE_URL + "/clients/" + id,
+        method: 'DELETE'
+    });
+}
+
 
 export function createPoll(pollData) {
     return request({

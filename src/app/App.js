@@ -91,8 +91,8 @@ class App extends Component {
 
   handleLogin() {
     notification.success({
-      message: 'Polling App',
-      description: "You're successfully logged in.",
+      message: 'My Pass',
+      description: "Autenticação ocorreu com sucesso.",
     });
     this.loadCurrentUser();
     this.props.history.push("/");

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { Form, Input, InputNumber, Button, Radio, Table } from 'antd'
+import {notification, Form, Input, InputNumber, Button, Radio, Table,Popconfirm } from 'antd'
 import './Cliente.css';
 import {
   Link,
   withRouter
 } from 'react-router-dom';
 import { CLIENT_LIST_SIZE } from '../constants';
-import { getAllClients} from '../util/APIUtils';
-
+import { getAllClients, removeClient} from '../util/APIUtils';
+import LoadingIndicator  from '../common/LoadingIndicator';
 
 const FormItem = Form.Item;
 
@@ -68,8 +68,55 @@ loadClientList(page = 0, size = CLIENT_LIST_SIZE) {
 componentDidMount() {
   this.loadClientList();
 }
-    render(){
-      console.log("Teste"+this.state.clients);
+
+handleDelete = (id) => {
+
+  const dataSource = [...this.state.clients];
+  
+  let promise;
+  promise = removeClient(id);
+
+  if(!promise) {
+      return;
+  }
+
+  this.setState({
+      isLoading: true
+  });
+  
+  promise            
+  .then(response => {
+    console.log(response);
+    this.setState({ clients: dataSource.filter(item => item.id !== id) });
+
+    notification.success({
+      message: 'My Pass',
+      description: "Cliente Removido com sucesso.",
+    });
+
+    this.setState({
+      isLoading: false
+  });
+  }).catch(error => {
+    console.log(error);
+
+        notification.error({
+          message: 'My Pass',
+          description: 'Ocorreu um erro. Por favor tente novamente!'
+      }); 
+      this.setState({
+          isLoading: false
+      });
+  });  
+   
+}
+
+render(){
+
+          if(this.state.isLoading) {
+            return <LoadingIndicator />;
+        }
+
         const { formLayout } = this.state;
 
         const layoutProps = { [formLayout]: true };
@@ -101,9 +148,14 @@ componentDidMount() {
             key: 'action',
             render: (text, record) => (
               <span>
-                <a onClick={()=>this.handleUpdateUser(record)}>Edit</a>
+                <a onClick={()=>this.handleUpdateClient(record)}>Editar</a>
                 <span className="ant-divider" />
-                <a onClick={()=>this.handleDeleteUser(record)}>Delete</a>
+                
+              
+            <Popconfirm title="Comfima exclusão?" onConfirm={() => this.handleDelete(record.id)}>
+              <a href="javascript:;">Apagar</a>
+            </Popconfirm>
+          
               </span>
             ),
           }];
@@ -127,7 +179,12 @@ componentDidMount() {
           </FormItem>
          
         </Form>
-        <Table className="tableClient" rowKey={record => record.id} dataSource={this.state.clients} {...this.state.tableConfig} columns={columns}  />
+        <Table className="tableClient"
+         rowKey={record => record.id} 
+         dataSource={this.state.clients}
+         rowClassName={() => 'editable-row'}
+         bordered
+          {...this.state.tableConfig} columns={columns}  />
       </div>
        
        ;
