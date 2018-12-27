@@ -67,6 +67,14 @@ export function createClient(clientData) {
     });
 }
 
+export function editClient(clientData) {
+    return request({
+        url: API_BASE_URL + "/clients",
+        method: 'PUT',
+        body: JSON.stringify(clientData)         
+    });
+}
+
 export function castVote(voteData) {
     return request({
         url: API_BASE_URL + "/polls/" + voteData.pollId + "/votes",

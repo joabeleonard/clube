@@ -8,6 +8,8 @@ import {
 import { CLIENT_LIST_SIZE } from '../constants';
 import { getAllClients, removeClient} from '../util/APIUtils';
 import LoadingIndicator  from '../common/LoadingIndicator';
+import  { Redirect } from 'react-router-dom'
+
 
 const FormItem = Form.Item;
 
@@ -55,7 +57,8 @@ loadClientList(page = 0, size = CLIENT_LIST_SIZE) {
           totalElements: response.totalElements,
           totalPages: response.totalPages,
           last: response.last,
-            isLoading: false
+          isLoading: false,
+          editableClient: false
       })
   }).catch(error => {
       this.setState({
@@ -67,6 +70,14 @@ loadClientList(page = 0, size = CLIENT_LIST_SIZE) {
  
 componentDidMount() {
   this.loadClientList();
+}
+
+handleUpdateClient = (client) =>{
+  
+   this.setState({
+    client:client,
+    editableClient:true
+  });
 }
 
 handleDelete = (id) => {
@@ -113,8 +124,15 @@ handleDelete = (id) => {
 
 render(){
 
-          if(this.state.isLoading) {
+        if(this.state.isLoading) {
             return <LoadingIndicator />;
+        }
+
+        if (this.state.editableClient === true) {
+          return <Redirect to={{
+            pathname: '/client/new',
+            client: {...this.state.client }
+        }} />
         }
 
         const { formLayout } = this.state;

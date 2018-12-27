@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createClient } from '../util/APIUtils';
+import { createClient, editClient } from '../util/APIUtils';
 import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
 import './NewPoll.css';  
 import { Form, Input, Button, Icon, Select, Col, notification, Tooltip } from 'antd';
@@ -39,6 +39,27 @@ class NewClient extends Component {
                 hours: 0
             }
         };
+
+        if(this.props.location.client){
+            console.log("CPF:"+this.props.location.client.cpf);
+
+            this.state = {
+                endereco: {
+                    text: this.props.location.client.id
+                },
+                cpf: this.props.location.client.cpf
+                ,
+                email: {
+                    text: ''
+                },
+                nome: {
+                    text: ''
+                },
+                senha: {
+                    text: ''
+                },
+            };
+        }
         this.addChoice = this.addChoice.bind(this);
         this.removeChoice = this.removeChoice.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -56,8 +77,7 @@ class NewClient extends Component {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    console.log(name);
-    console.log(value);
+    
     this.setState({
       [name]: value
     });
@@ -81,16 +101,35 @@ class NewClient extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        const clientData = {
-            cpf:this.state.cpf,
-            endereco: this.state.endereco.text,
-            nome: this.state.nome,
-            senha: this.state.senha,
-            email: this.state.email
-        };
-        console.log(clientData);
+        let clientData;
+        
 
-        createClient(clientData)
+        let promise;
+        if(this.props.location.client){
+            clientData= {
+                cpf:this.state.cpf,
+                endereco: this.state.endereco.text,
+                nome: this.state.nome,
+                senha: this.state.senha,
+                email: this.state.email,
+                id:this.props.location.client.id
+            };
+            promise = editClient(clientData)
+        }else{
+             
+            clientData= {
+                cpf:this.state.cpf,
+                endereco: this.state.endereco.text,
+                nome: this.state.nome,
+                senha: this.state.senha,
+                email: this.state.email
+            };
+ 
+            promise =  createClient(clientData);
+        }
+
+        console.log(clientData);
+        promise
         .then(response => {
             notification.success({
                 message: 'My pass',
@@ -224,6 +263,7 @@ class NewClient extends Component {
                         </FormItem>
                         <FormItem>
                               <Input placeholder="CPF" name="cpf"
+                               value = {this.state.cpf}
                                onChange={this.handleInputChange} />         
                         </FormItem>
         <FormItem>
