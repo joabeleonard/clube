@@ -50,6 +50,23 @@ export function removeClient(id) {
     });
 }
 
+export function getAllEmpresas(page, size) {
+    page = page || 0;
+    size = size || CLIENT_LIST_SIZE;
+
+    return request({
+        url: API_BASE_URL + "/empresas?page=" + page + "&size=" + size,
+        method: 'GET'
+    });
+}
+
+export function removeEmpresa(id) {
+     return request({
+        url: API_BASE_URL + "/empresa/" + id,
+        method: 'DELETE'
+    });
+}
+
 
 export function createPoll(pollData) {
     return request({

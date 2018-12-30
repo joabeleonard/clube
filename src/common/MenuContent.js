@@ -19,6 +19,53 @@ class MenuContent extends Component {
 
 
   render() {
+
+    let menuItems;
+    console.log(this.props.currentUser);
+    if(this.props.currentUser && this.props.currentUser.perfil === 'ROLE_USER'){
+      menuItems = [
+        <Menu.Item key="/fornecedores">
+        <Link to="/fornecedores">
+         <Icon type="tags" />Fornecedores
+        </Link>     
+       </Menu.Item>,
+       <Menu.Item key="/clientes" >
+         <Link to="/clientes">
+           <Icon type="user" />Clientes
+         </Link>
+       </Menu.Item>       
+      ];
+    }
+
+    if(this.props.currentUser && this.props.currentUser.perfil === 'ROLE_ADMIN'){
+      menuItems = [
+        <Menu.Item key="/empresas">
+        <Link to="/empresas">
+         <Icon type="tags" />Empresas
+        </Link>     
+       </Menu.Item>,
+       <Menu.Item key="/minhasCompras" >
+         <Link to="/minhasCompras">
+           <Icon type="user" />Minhas Compras
+         </Link>
+       </Menu.Item>       
+      ];
+    }
+
+    if(this.props.currentUser && this.props.currentUser.perfil === 'ROLE_ENTERPRISE'){
+      menuItems = [
+        <Menu.Item key="/validarCodigo">
+        <Link to="/validarCodigo">
+         <Icon type="tags" />Validar Código
+        </Link>     
+       </Menu.Item>,
+       <Menu.Item key="/relatorios" >
+         <Link to="/relatorios">
+           <Icon type="user" />Relatório
+         </Link>
+       </Menu.Item>       
+      ];
+    }
     if(this.props.currentUser) {
       return (
         <div className="container">
@@ -27,19 +74,7 @@ class MenuContent extends Component {
             selectedKeys={[this.state.current]}
             mode="horizontal"
           >
-            <Menu.Item key="/fornecedores">
-             <Link to="/fornecedores">
-              <Icon type="tags" />Fornecedores
-             </Link>
-              
-            </Menu.Item>
-            <Menu.Item key="/clientes" >
-              <Link to="/clientes">
-                <Icon type="user" />Clientes
-              </Link>
-            </Menu.Item>
-          
-           
+             {menuItems} 
           </Menu>
         </div>
       );
