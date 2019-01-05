@@ -16,9 +16,7 @@ class NewClient extends Component {
             endereco: {
                 text: ''
             },
-            cpf: {
-                text: ''
-            },
+            cpf: '',
             email: {
                 text: ''
             },

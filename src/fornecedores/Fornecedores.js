@@ -19,7 +19,7 @@ class Fornecedores extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            emrpesas: [],
+            empresas: [],
             page: 0,
             size: 10,
             totalElements: 0,
@@ -44,11 +44,11 @@ class Fornecedores extends Component{
         this.setState({
             isLoading: true
         });
-      
         promise            
         .then(response => {
+          console.log(response);
+
             const empresas = this.state.empresas.slice();
-      
             this.setState({
                 empresas: empresas.concat(response.content),
                 page: response.page,
@@ -57,7 +57,7 @@ class Fornecedores extends Component{
                 totalPages: response.totalPages,
                 last: response.last,
                 isLoading: false,
-                editableClient: false
+                editableEmpresa: false
             })
         }).catch(error => {
             this.setState({
@@ -70,17 +70,17 @@ class Fornecedores extends Component{
         this.loadEmpresaList();
       }
 
-    handleUpdateClient = (empresa) =>{
+    handleUpdateEmpresa = (empresa) =>{
   
         this.setState({
          empresa:empresa,
-         editableClient:true
+         editableEmpresa:true
        });
      }
 
     handleDelete = (id) => {
 
-        const dataSource = [...this.state.clients];
+        const dataSource = [...this.state.empresas];
         
         let promise;
         promise = removeEmpresa(id);
@@ -96,7 +96,7 @@ class Fornecedores extends Component{
         promise            
         .then(response => {
           console.log(response);
-          this.setState({ clients: dataSource.filter(item => item.id !== id) });
+          this.setState({ empresas: dataSource.filter(item => item.id !== id) });
       
           notification.success({
             message: 'My Pass',
@@ -152,8 +152,8 @@ class Fornecedores extends Component{
             key: 'logo',
           },{
             title: 'Nome',
-            dataIndex: 'nome',
-            key: 'nome',
+            dataIndex: 'user.name',
+            key: 'name',
           }, {
             title: 'Endereço',
             dataIndex: 'endereco',
@@ -167,7 +167,7 @@ class Fornecedores extends Component{
             key: 'action',
             render: (text, record) => (
               <span>
-                <a onClick={()=>this.handleUpdateClient(record)}>Editar</a>
+                <a onClick={()=>this.handleUpdateEmpresa(record)}>Editar</a>
                 <span className="ant-divider" />
                 
               

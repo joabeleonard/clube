@@ -55,7 +55,7 @@ export function getAllEmpresas(page, size) {
     size = size || CLIENT_LIST_SIZE;
 
     return request({
-        url: API_BASE_URL + "/empresas?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/empresa?page=" + page + "&size=" + size,
         method: 'GET'
     });
 }
@@ -67,6 +67,21 @@ export function removeEmpresa(id) {
     });
 }
 
+export function createEmpresa(data) {
+    return request({
+        url: API_BASE_URL + "/empresa",
+        method: 'POST',
+        body: JSON.stringify(data)         
+    });
+}
+
+export function editEmpresa(data) {
+    return request({
+        url: API_BASE_URL + "/empresa",
+        method: 'PUT',
+        body: JSON.stringify(data)         
+    });
+}
 
 export function createPoll(pollData) {
     return request({

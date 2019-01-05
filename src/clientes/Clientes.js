@@ -49,7 +49,6 @@ loadClientList(page = 0, size = CLIENT_LIST_SIZE) {
   promise            
   .then(response => {
       const clients = this.state.clients.slice();
-
       this.setState({
           clients: clients.concat(response.content),
           page: response.page,

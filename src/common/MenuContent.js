@@ -24,9 +24,9 @@ class MenuContent extends Component {
     console.log(this.props.currentUser);
     if(this.props.currentUser && this.props.currentUser.perfil === 'ROLE_USER'){
       menuItems = [
-        <Menu.Item key="/fornecedores">
-        <Link to="/fornecedores">
-         <Icon type="tags" />Fornecedores
+        <Menu.Item key="/empresas">
+        <Link to="/empresas">
+         <Icon type="tags" />Empresas
         </Link>     
        </Menu.Item>,
        <Menu.Item key="/clientes" >
