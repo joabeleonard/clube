@@ -22,7 +22,7 @@ class MenuContent extends Component {
 
     let menuItems;
     console.log(this.props.currentUser);
-    if(this.props.currentUser && this.props.currentUser.perfil === 'ROLE_USER'){
+    if(this.props.currentUser && this.props.currentUser.perfil === 'ROLE_ADMIN'){
       menuItems = [
         <Menu.Item key="/empresas">
         <Link to="/empresas">
@@ -37,10 +37,10 @@ class MenuContent extends Component {
       ];
     }
 
-    if(this.props.currentUser && this.props.currentUser.perfil === 'ROLE_ADMIN'){
+    if(this.props.currentUser && this.props.currentUser.perfil === 'ROLE_USER'){
       menuItems = [
-        <Menu.Item key="/empresas">
-        <Link to="/empresas">
+        <Menu.Item key="/empresaList">
+        <Link to="/empresaList">
          <Icon type="tags" />Empresas
         </Link>     
        </Menu.Item>,
