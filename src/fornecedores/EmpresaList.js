@@ -131,7 +131,7 @@ class EmpresaList extends Component {
 
         const empresasViews = [];
         this.state.empresas.forEach((empresa, empresaIndex) => {
-            empresasViews.push(<Empresa 
+            empresasViews.push(<Empresa  currentUser={this.props.currentUser}
                 key={empresa.id} 
                 empresa={empresa}
                  />)            

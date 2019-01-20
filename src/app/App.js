@@ -32,6 +32,7 @@ import Fornecedores from '../fornecedores/Fornecedores';
 
 import { Layout, notification } from 'antd';
 import EmpresaList from '../fornecedores/EmpresaList';
+import CuponsList from '../clientes/CuponsList';
 const { Content } = Layout;
 
 
@@ -128,12 +129,14 @@ class App extends Component {
                 </Route>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/poll/new" component={NewPoll} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresas" component={Fornecedores} handleLogout={this.handleLogout}></PrivateRoute>
-                <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresaList" component={EmpresaList} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresaList" component={EmpresaList} handleLogout={this.handleLogout} currentUser={this.state.currentUser}></PrivateRoute>
 
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresa/new" component={NewEmpresa} handleLogout={this.handleLogout}></PrivateRoute>
 
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/clientes" component={Clientes} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/client/new" component={NewClient} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/minhasCompras" component={CuponsList} handleLogout={this.handleLogout} currentUser={this.state.currentUser} ></PrivateRoute>
+               
                 <Route component={NotFound}></Route>
               </Switch>
             </div>

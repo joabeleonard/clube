@@ -7,8 +7,6 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 const { TextArea } = Input
 
-
-
 class NewEmpresa extends Component {
     constructor(props) {
         super(props);
@@ -34,8 +32,6 @@ class NewEmpresa extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-
-    
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -50,7 +46,6 @@ class NewEmpresa extends Component {
         event.preventDefault();
         let empresaData;
         
-
         let promise;
         if(this.props.location.empresa){
             empresaData= {

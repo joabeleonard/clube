@@ -1,14 +1,54 @@
 import React, { Component } from 'react';
 import './Empresa.css';
-import { Avatar, Icon } from 'antd';
+import {Form, Avatar, Icon, notification } from 'antd';
 import { Link } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
+import { createCupom } from '../util/APIUtils';
+
 
 import { Radio, Button } from 'antd';
 const RadioGroup = Radio.Group;
+const FormItem = Form.Item;
+
 
 class Empresa extends Component {
+
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        let promise;
+
+        this.setState({
+            isLoading: true
+        });
+        promise =  createCupom(this.props.empresa.id,this.props.currentUser.id );
+        promise
+        .then(response => {
+            notification.success({
+                message: 'My pass',
+                description: "Cupom Gerado com Sucesso.",
+              });
+              this.setState({
+                isLoading: false
+            });
+            this.props.history.push("/");
+        }).catch(error => {
+            if(error.status === 401) {
+                this.props.handleLogout('/login', 'error', 'Você deve estar autenticado.');    
+            } else {
+                notification.error({
+                    message: 'My pass',
+                    description: error.message || 'Descupe! Ocorreu um erro. Tente novamente!'
+                });              
+            }
+        });
+    }
+
     calculatePercentage = (choice) => {
         if(this.props.poll.totalVotes === 0) {
             return 0;
@@ -79,10 +119,17 @@ class Empresa extends Component {
                 <div className="poll-choices">
                        {this.props.empresa.detalhes}
                 </div>
-                <div className="poll-footer">
-                <Link to="/"><Button className="go-back-btn" type="primary" size="large">Gerar Código</Button></Link>
-            
-                </div>
+                <Form onSubmit={this.handleSubmit}>
+                    <div className="poll-footer">
+                    <FormItem className="poll-form-row">
+                         <Button className="go-back-btn" type="primary"
+                          htmlType="submit" size="large">
+                            Gerar Código
+                         </Button>
+                         </FormItem>
+                    </div>
+                </Form>
+
             </div>
         );
     }

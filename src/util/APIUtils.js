@@ -75,6 +75,13 @@ export function createEmpresa(data) {
     });
 }
 
+export function createCupom(empresa, cliente) {
+    return request({
+        url: API_BASE_URL + "/cupom/generate?empresa=" + empresa+ "&cliente="+cliente,
+        method: 'GET'    
+    });
+}
+
 export function editEmpresa(data) {
     return request({
         url: API_BASE_URL + "/empresa",
@@ -180,6 +187,17 @@ export function getUserVotedPolls(username, page, size) {
 
     return request({
         url: API_BASE_URL + "/users/" + username + "/votes?page=" + page + "&size=" + size,
+        method: 'GET'
+    });
+
+}
+
+export function getCupomByCliente(username, page, size) {
+    page = page || 0;
+    size = size || POLL_LIST_SIZE;
+
+    return request({
+        url: API_BASE_URL + "/cupom/cliente/" + username + "?page=" + page + "&size=" + size,
         method: 'GET'
     });
 }
