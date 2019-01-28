@@ -145,6 +145,15 @@ export function checkUsernameAvailability(username) {
     });
 }
 
+export function validarCupom(cupom) {
+    return request({
+        url: API_BASE_URL + "/cupom?cupom=" + cupom,
+        method: 'GET'
+    });
+}
+
+
+
 export function checkEmailAvailability(email) {
     return request({
         url: API_BASE_URL + "/user/checkEmailAvailability?email=" + email,

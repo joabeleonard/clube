@@ -21,6 +21,7 @@ import LoadingIndicator from '../common/LoadingIndicator';
 import PrivateRoute from '../common/PrivateRoute';
 import NewClient from '../clientes/NewClient';
 import NewEmpresa from '../fornecedores/NewEmpresa';
+import ValidarCupom from '../fornecedores/ValidarCupom';
 
 
 import Clientes from '../clientes/Clientes';
@@ -132,6 +133,9 @@ class App extends Component {
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresaList" component={EmpresaList} handleLogout={this.handleLogout} currentUser={this.state.currentUser}></PrivateRoute>
 
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresa/new" component={NewEmpresa} handleLogout={this.handleLogout}></PrivateRoute>
+                
+
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/validarCodigo" component={ValidarCupom} handleLogout={this.handleLogout}></PrivateRoute>
 
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/clientes" component={Clientes} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/client/new" component={NewClient} handleLogout={this.handleLogout}></PrivateRoute>
