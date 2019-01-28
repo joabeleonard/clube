@@ -64,7 +64,7 @@ class CuponsList extends Component{
 
     
     render(){
-
+        console.log(this.state.cupons);
         if(this.state.isLoading) {
             return <LoadingIndicator />;
         }
@@ -80,7 +80,7 @@ class CuponsList extends Component{
 
           const columns = [{
             title: 'Empresa',
-            dataIndex: 'empresa.user.name',
+            dataIndex: 'empresa',
             key: 'empresa',
           }, {
             title: 'Data Geração',

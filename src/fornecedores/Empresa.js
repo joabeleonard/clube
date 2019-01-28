@@ -7,6 +7,7 @@ import { formatDateTime } from '../util/Helpers';
 import { createCupom } from '../util/APIUtils';
 
 
+
 import { Radio, Button } from 'antd';
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
@@ -36,7 +37,6 @@ class Empresa extends Component {
               this.setState({
                 isLoading: false
             });
-            this.props.history.push("/");
         }).catch(error => {
             if(error.status === 401) {
                 this.props.handleLogout('/login', 'error', 'Você deve estar autenticado.');    
