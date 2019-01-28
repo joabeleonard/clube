@@ -4,7 +4,7 @@ import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '.
 import './NewPoll.css';  
 import { Form, Input, Button, Icon, Select, Col, notification, Tooltip } from 'antd';
 import LoadingIndicator  from '../common/LoadingIndicator';
-
+import Cupom from './Cupom';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { TextArea } = Input
@@ -78,13 +78,24 @@ class ValidarCupom extends Component {
 
     render() {
 
+       
         if(this.state.isLoading) {
             return <LoadingIndicator />;
         }
+        
+        let cupomViews = [];
+        if(this.state.cupom.id){
+            cupomViews =  <Cupom  currentUser={this.props.currentUser}
+            cupom={this.state.cupom}
+             />
+       }
         return (
 
             <div className="new-poll-container">
                 <h1 className="page-title">Válidar Cupom</h1>
+            
+                {cupomViews}
+               
                 <div className="new-poll-content">
                     <Form onSubmit={this.handleSubmit} className="create-poll-form">
 
