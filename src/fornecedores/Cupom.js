@@ -4,7 +4,8 @@ import {Form, Avatar, Icon, notification } from 'antd';
 import { Link } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
-import { createCupom } from '../util/APIUtils';
+import { usarCupom } from '../util/APIUtils';
+import LoadingIndicator  from '../common/LoadingIndicator';
 
 
 
@@ -15,8 +16,14 @@ const FormItem = Form.Item;
 
 class Cupom extends Component {
 
+    
     constructor(props) {
         super(props);
+
+        this.state = {
+            isLoading: false
+        };
+
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -27,17 +34,22 @@ class Cupom extends Component {
         this.setState({
             isLoading: true
         });
-        promise =  createCupom(this.props.empresa.id,this.props.currentUser.id );
+       
+        console.log(this.props.cupom);
+        promise =  usarCupom(this.props.cupom);
         promise
         .then(response => {
             notification.success({
-                message: 'My pass',
-                description: "Cupom Gerado com Sucesso.",
+                message: 'Boon',
+                description: "Cupom Validado com Sucesso.",
               });
               this.setState({
                 isLoading: false
             });
         }).catch(error => {
+            this.setState({
+                isLoading: false
+            });
             if(error.status === 401) {
                 this.props.handleLogout('/login', 'error', 'Você deve estar autenticado.');    
             } else {
@@ -51,7 +63,9 @@ class Cupom extends Component {
 
   
     render() {
-      
+        if(this.state.isLoading) {
+            return <LoadingIndicator />;
+        }
         return (
             <div className="poll-content">
                 <div className="poll-header">

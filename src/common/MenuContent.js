@@ -21,7 +21,6 @@ class MenuContent extends Component {
   render() {
 
     let menuItems;
-    console.log(this.props.currentUser);
     if(this.props.currentUser && this.props.currentUser.perfil === 'ROLE_ADMIN'){
       menuItems = [
         <Menu.Item key="/empresas">

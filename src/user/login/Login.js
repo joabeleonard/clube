@@ -82,7 +82,7 @@ class LoginForm extends Component {
                 </FormItem>
                 <FormItem>
                     <Button type="primary" htmlType="submit" size="large" className="login-form-button">Entrar</Button>
-                    Ou <Link to="/signup">cadastra agora!</Link>
+                    Ou <Link to="/client/new">cadastra agora!</Link>
                 </FormItem>
             </Form>
         );

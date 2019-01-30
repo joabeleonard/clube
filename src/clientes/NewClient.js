@@ -2,75 +2,68 @@ import React, { Component } from 'react';
 import { createClient, editClient } from '../util/APIUtils';
 import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
 import './NewPoll.css';  
-import { Form, Input, Button, Icon, Select, Col, notification, Tooltip } from 'antd';
+import { Form, Input, Button, Icon, Select, Col, notification, Tooltip, Radio, DatePicker } from 'antd';
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { TextArea } = Input
-
-
+const RadioGroup = Radio.Group;
 
 class NewClient extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            endereco: {
-                text: ''
-            },
+            endereco: '',
             cpf: '',
-            email: {
-                text: ''
-            },
-            nome: {
-                text: ''
-            },
-            senha: {
-                text: ''
-            },
-
-            choices: [{
-                text: ''
-            }, {
-                text: ''
-            }],
-            pollLength: {
-                days: 1,
-                hours: 0
-            }
+            email:'',
+            nome:'',
+            senha:'',
+            rg:'',
+            cep:'',
+            sexo:'',
+            telefone:'',
+            bairro:'',
+            numero:'',
+            cidade:'',
+            estado:'',
+            dataNascimento:''
         };
 
         if(this.props.location.client){
-            console.log("CPF:"+this.props.location.client.cpf);
 
             this.state = {
-                endereco: {
-                    text: this.props.location.client.id
-                },
-                cpf: this.props.location.client.cpf
-                ,
-                email: {
-                    text: ''
-                },
-                nome: {
-                    text: ''
-                },
-                senha: {
-                    text: ''
-                },
+                endereco: this.props.location.client.empresa,
+                cpf: this.props.location.client.cpf,
+                email: this.props.location.client.email,
+                nome: this.props.location.client.nome,
+                senha: this.props.location.client.senha,
+                rg:this.props.location.client.rg,
+                cep:this.props.location.client.cep,
+                sexo:this.props.location.client.sexo,
+                telefone:this.props.location.client.telefone,
+                bairro:this.props.location.client.bairro,
+                numero:this.props.location.client.numero,
+                cidade:this.props.location.client.cidade,
+                estado:this.props.location.client.estado,
+                dataNascimento:this.props.location.client.dataNascimento
             };
         }
-        this.addChoice = this.addChoice.bind(this);
-        this.removeChoice = this.removeChoice.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleDatePickerChange = this.handleDatePickerChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleQuestionChange = this.handleQuestionChange.bind(this);
-        this.handleChoiceChange = this.handleChoiceChange.bind(this);
-        this.handlePollDaysChange = this.handlePollDaysChange.bind(this);
-        this.handlePollHoursChange = this.handlePollHoursChange.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
     }
 
 
     
+    handleDatePickerChange(date, dateString) {
+        console.log(date, dateString);
+        const value = dateString;
+        const name = 'dataNascimento';
+        
+        this.setState({
+          [name]: value
+        });
+      }
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -81,148 +74,72 @@ class NewClient extends Component {
     });
   }
 
-    addChoice(event) {
-        const choices = this.state.choices.slice();        
-        this.setState({
-            choices: choices.concat([{
-                text: ''
-            }])
-        });
-    }
-
-    removeChoice(choiceNumber) {
-        const choices = this.state.choices.slice();
-        this.setState({
-            choices: [...choices.slice(0, choiceNumber), ...choices.slice(choiceNumber+1)]
-        });
-    }
-
     handleSubmit(event) {
         event.preventDefault();
-        let clientData;
-        
+        let clientData;   
 
         let promise;
         if(this.props.location.client){
             clientData= {
                 cpf:this.state.cpf,
-                endereco: this.state.endereco.text,
+                endereco: this.state.endereco,
                 nome: this.state.nome,
                 senha: this.state.senha,
                 email: this.state.email,
-                id:this.props.location.client.id
+                id:this.props.location.client.id,
+                rg:this.state.rg,
+                cep:this.state.cep,
+                sexo:this.state.sexo,
+                telefone:this.state.telefone,
+                bairro:this.state.bairro,
+                numero:this.state.numero,
+                cidade:this.state.cidade,
+                estado:this.state.estado,
+                dataNascimento:this.state.dataNascimento
             };
             promise = editClient(clientData)
         }else{
              
             clientData= {
                 cpf:this.state.cpf,
-                endereco: this.state.endereco.text,
+                endereco: this.state.endereco,
                 nome: this.state.nome,
                 senha: this.state.senha,
-                email: this.state.email
+                email: this.state.email,
+                rg:this.state.rg,
+                cep:this.state.cep,
+                sexo:this.state.sexo,
+                telefone:this.state.telefone,
+                bairro:this.state.bairro,
+                numero:this.state.numero,
+                cidade:this.state.cidade,
+                estado:this.state.estado,
+                dataNascimento:this.state.dataNascimento
             };
  
             promise =  createClient(clientData);
         }
 
-        console.log(clientData);
         promise
         .then(response => {
             notification.success({
-                message: 'My pass',
+                message: 'Boon',
                 description: "Cliente Cadastrado com sucesso.",
               });
             this.props.history.push("/clientes");
         }).catch(error => {
             if(error.status === 401) {
-                this.props.handleLogout('/login', 'error', 'You have been logged out. Please login create poll.');    
+                this.props.handleLogout('/login', 'error', 'Erro, por favor tente novamente.');    
             } else {
                 notification.error({
-                    message: 'Polling App',
+                    message: 'Boon',
                     description: error.message || 'Sorry! Something went wrong. Please try again!'
                 });              
             }
         });
     }
 
-    validateQuestion = (questionText) => {
-        if(questionText.length === 0) {
-            return {
-                validateStatus: 'error',
-                errorMsg: 'Please enter your question!'
-            }
-        } else if (questionText.length > POLL_QUESTION_MAX_LENGTH) {
-            return {
-                validateStatus: 'error',
-                errorMsg: `Question is too long (Maximum ${POLL_QUESTION_MAX_LENGTH} characters allowed)`
-            }    
-        } else {
-            return {
-                validateStatus: 'success',
-                errorMsg: null
-            }
-        }
-    }
-
-    handleQuestionChange(event) {
-        const value = event.target.value;
-        this.setState({
-            endereco: {
-                text: value,
-                ...this.validateQuestion(value)
-            }
-        });
-    }
-
-    validateChoice = (choiceText) => {
-        if(choiceText.length === 0) {
-            return {
-                validateStatus: 'error',
-                errorMsg: 'Please enter a choice!'
-            }
-        } else if (choiceText.length > POLL_CHOICE_MAX_LENGTH) {
-            return {
-                validateStatus: 'error',
-                errorMsg: `Choice is too long (Maximum ${POLL_CHOICE_MAX_LENGTH} characters allowed)`
-            }    
-        } else {
-            return {
-                validateStatus: 'success',
-                errorMsg: null
-            }
-        }
-    }
-
-    handleChoiceChange(event, index) {
-        const choices = this.state.choices.slice();
-        const value = event.target.value;
-
-        choices[index] = {
-            text: value,
-            ...this.validateChoice(value)
-        }
-
-        this.setState({
-            choices: choices
-        });
-    }
-
-
-    handlePollDaysChange(value) {
-        const pollLength = Object.assign(this.state.pollLength, {days: value});
-        this.setState({
-            pollLength: pollLength
-        });
-    }
-
-    handlePollHoursChange(value) {
-        const pollLength = Object.assign(this.state.pollLength, {hours: value});
-        this.setState({
-            pollLength: pollLength
-        });
-    }
-
+   
     isFormInvalid() {
         if(this.state.endereco.validateStatus !== 'success') {
             return true;
@@ -264,27 +181,60 @@ class NewClient extends Component {
                                value = {this.state.cpf}
                                onChange={this.handleInputChange} />         
                         </FormItem>
-        <FormItem>
-            <Input type="password" placeholder="Senha" name="senha"
-             onChange={this.handleInputChange} 
-             prefix={<Icon type="lock" />}/>
-        </FormItem>
-                        <FormItem validateStatus={this.state.endereco.validateStatus}
-                            help={this.state.endereco.errorMsg} className="poll-form-row">
-                        <TextArea 
-                            placeholder="Endereço"
-                            style = {{ fontSize: '16px' }} 
-                            autosize={{ minRows: 3, maxRows: 6 }} 
-                            name = "endereco"
-                            value = {this.state.endereco.text}
-                            onChange = {this.handleQuestionChange} />
+                        <FormItem>
+                              <Input placeholder="RG" name="rg"
+                               value = {this.state.rg}
+                               onChange={this.handleInputChange} />         
                         </FormItem>
+                        <FormItem>
+                             <DatePicker placeholder="Data de Nascimento" name="dataNascimento"
+                               value = {this.state.dataNascimento}
+                               onChange={this.handleDatePickerChange} />         
+                        </FormItem>
+                        <FormItem>
+                            <RadioGroup  value = {this.state.sexo}
+                               onChange={this.handleInputChange}>
+                                <Radio value={1}>Masculino</Radio>
+                                <Radio value={2}>Feminino</Radio>
+                            </RadioGroup>
+                            <Input placeholder="Telefone" name="telefone"
+                               value = {this.state.telefone}
+                               onChange={this.handleInputChange} />    
+                            <Input placeholder="CEP" name="cep"
+                               value = {this.state.cep}
+                               onChange={this.handleInputChange} />  
+                            <Input placeholder="Endereço" name="endereco"
+                               value = {this.state.endereco}
+                               onChange={this.handleInputChange} /> 
+                                <Input placeholder="Número" name="numero"
+                               value = {this.state.numero}
+                               onChange={this.handleInputChange} /> 
+                            <Input placeholder="Complemento" name="complemento"
+                               value = {this.state.complemento}
+                               onChange={this.handleInputChange} />  
+                            <Input placeholder="Bairro" name="bairro"
+                               value = {this.state.bairro}
+                               onChange={this.handleInputChange} />  
+                            <Input placeholder="Estado" name="estado"
+                               value = {this.state.estado}
+                               onChange={this.handleInputChange} />    
+                            <Input placeholder="Cidade" name="cidade"
+                               value = {this.state.cidade}
+                               onChange={this.handleInputChange} />  
+
+                        </FormItem>
+                     
+                        <FormItem>
+                            <Input type="password" placeholder="Senha" name="senha"
+                            onChange={this.handleInputChange} 
+                            prefix={<Icon type="lock" />}/>
+                        </FormItem>
+                     
                        
                         <FormItem className="poll-form-row">
                             <Button type="primary" 
                                 htmlType="submit" 
                                 size="large" 
-                                disabled={this.isFormInvalid()}
                                 className="create-poll-form-button">Salvar</Button>
                         </FormItem>
                     </Form>

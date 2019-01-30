@@ -90,6 +90,14 @@ export function editEmpresa(data) {
     });
 }
 
+export function usarCupom(cupom) {
+    return request({
+        url: API_BASE_URL + "/cupom",
+        method: 'PUT',
+        body: JSON.stringify(cupom)         
+    });
+}
+
 export function createPoll(pollData) {
     return request({
         url: API_BASE_URL + "/polls",
