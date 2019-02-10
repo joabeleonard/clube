@@ -3,16 +3,20 @@ import { createClient, editClient } from '../util/APIUtils';
 import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
 import './NewPoll.css';  
 import { Form, Input, Button, Icon, Select, Col, notification, Tooltip, Radio, DatePicker } from 'antd';
+import moment from 'moment';
+import { formatDateTime } from '../util/Helpers';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { TextArea } = Input
 const RadioGroup = Radio.Group;
 
+const dateFormat = 'YYYY/MM/DD';
+
 class NewClient extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            endereco: '',
             cpf: '',
             email:'',
             nome:'',
@@ -21,6 +25,7 @@ class NewClient extends Component {
             cep:'',
             sexo:'',
             telefone:'',
+            logradouro:'',
             bairro:'',
             numero:'',
             cidade:'',
@@ -29,9 +34,8 @@ class NewClient extends Component {
         };
 
         if(this.props.location.client){
-
+            console.log(this.props.location.client);
             this.state = {
-                endereco: this.props.location.client.empresa,
                 cpf: this.props.location.client.cpf,
                 email: this.props.location.client.email,
                 nome: this.props.location.client.nome,
@@ -42,33 +46,34 @@ class NewClient extends Component {
                 telefone:this.props.location.client.telefone,
                 bairro:this.props.location.client.bairro,
                 numero:this.props.location.client.numero,
+                logradouro:this.props.location.client.logradouro,
+                complemento:this.props.location.client.complemento,
                 cidade:this.props.location.client.cidade,
                 estado:this.props.location.client.estado,
-                dataNascimento:this.props.location.client.dataNascimento
+                dataNascimento:moment(this.props.location.client.dataNascimento, dateFormat)
             };
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleDatePickerChange = this.handleDatePickerChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.isFormInvalid = this.isFormInvalid.bind(this);
     }
 
 
     
     handleDatePickerChange(date, dateString) {
-        console.log(date, dateString);
+        console.log(date);
         const value = dateString;
         const name = 'dataNascimento';
         
         this.setState({
-          [name]: value
+          [name]: date
         });
       }
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    
+    //console.log(value+ name);
     this.setState({
       [name]: value
     });
@@ -82,7 +87,6 @@ class NewClient extends Component {
         if(this.props.location.client){
             clientData= {
                 cpf:this.state.cpf,
-                endereco: this.state.endereco,
                 nome: this.state.nome,
                 senha: this.state.senha,
                 email: this.state.email,
@@ -93,16 +97,19 @@ class NewClient extends Component {
                 telefone:this.state.telefone,
                 bairro:this.state.bairro,
                 numero:this.state.numero,
+                logradouro :this.state.logradouro,
+
+                complemento :this.state.complemento,
                 cidade:this.state.cidade,
                 estado:this.state.estado,
                 dataNascimento:this.state.dataNascimento
             };
+
             promise = editClient(clientData)
         }else{
              
             clientData= {
                 cpf:this.state.cpf,
-                endereco: this.state.endereco,
                 nome: this.state.nome,
                 senha: this.state.senha,
                 email: this.state.email,
@@ -112,6 +119,9 @@ class NewClient extends Component {
                 telefone:this.state.telefone,
                 bairro:this.state.bairro,
                 numero:this.state.numero,
+                logradouro:this.state.logradouro,
+                complemento:this.state.complemento,
+
                 cidade:this.state.cidade,
                 estado:this.state.estado,
                 dataNascimento:this.state.dataNascimento
@@ -128,6 +138,7 @@ class NewClient extends Component {
               });
             this.props.history.push("/clientes");
         }).catch(error => {
+            console.log(error);
             if(error.status === 401) {
                 this.props.handleLogout('/login', 'error', 'Erro, por favor tente novamente.');    
             } else {
@@ -139,13 +150,7 @@ class NewClient extends Component {
         });
     }
 
-   
-    isFormInvalid() {
-        if(this.state.endereco.validateStatus !== 'success') {
-            return true;
-        }
-
-    }
+  
 
     render() {
         const choiceViews = [];
@@ -188,14 +193,14 @@ class NewClient extends Component {
                         </FormItem>
                         <FormItem>
                              <DatePicker placeholder="Data de Nascimento" name="dataNascimento"
-                               value = {this.state.dataNascimento}
+                               defaultValue = {this.state.dataNascimento}
                                onChange={this.handleDatePickerChange} />         
                         </FormItem>
                         <FormItem>
-                            <RadioGroup  value = {this.state.sexo}
+                            <RadioGroup  defaultValue = {this.state.sexo} name="sexo"
                                onChange={this.handleInputChange}>
-                                <Radio value={1}>Masculino</Radio>
-                                <Radio value={2}>Feminino</Radio>
+                                <Radio value={'M'}>Masculino</Radio>
+                                <Radio value={'F'}>Feminino</Radio>
                             </RadioGroup>
                             <Input placeholder="Telefone" name="telefone"
                                value = {this.state.telefone}
@@ -203,8 +208,8 @@ class NewClient extends Component {
                             <Input placeholder="CEP" name="cep"
                                value = {this.state.cep}
                                onChange={this.handleInputChange} />  
-                            <Input placeholder="Endereço" name="endereco"
-                               value = {this.state.endereco}
+                            <Input placeholder="Logradouro" name="logradouro"
+                               value = {this.state.logradouro}
                                onChange={this.handleInputChange} /> 
                                 <Input placeholder="Número" name="numero"
                                value = {this.state.numero}

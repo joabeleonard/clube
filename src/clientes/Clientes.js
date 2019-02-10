@@ -100,7 +100,7 @@ handleDelete = (id) => {
     this.setState({ clients: dataSource.filter(item => item.id !== id) });
 
     notification.success({
-      message: 'My Pass',
+      message: 'Boon',
       description: "Cliente Removido com sucesso.",
     });
 
@@ -111,7 +111,7 @@ handleDelete = (id) => {
     console.log(error);
 
         notification.error({
-          message: 'My Pass',
+          message: 'Boon',
           description: 'Ocorreu um erro. Por favor tente novamente!'
       }); 
       this.setState({
