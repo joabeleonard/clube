@@ -138,7 +138,7 @@ class App extends Component {
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/validarCodigo" component={ValidarCupom} handleLogout={this.handleLogout}></PrivateRoute>
 
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/clientes" component={Clientes} handleLogout={this.handleLogout}></PrivateRoute>
-                <Route  path="/client/new" component={NewClient} ></Route>
+                <Route  path="/client/new" authenticated={this.state.isAuthenticated} component={NewClient} ></Route>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/minhasCompras" component={CuponsList} handleLogout={this.handleLogout} currentUser={this.state.currentUser} ></PrivateRoute>
                
                 <Route component={NotFound}></Route>

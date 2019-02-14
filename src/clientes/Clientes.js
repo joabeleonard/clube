@@ -49,6 +49,7 @@ loadClientList(page = 0, size = CLIENT_LIST_SIZE) {
   promise            
   .then(response => {
       const clients = this.state.clients.slice();
+      
       this.setState({
           clients: clients.concat(response.content),
           page: response.page,
@@ -59,6 +60,8 @@ loadClientList(page = 0, size = CLIENT_LIST_SIZE) {
           isLoading: false,
           editableClient: false
       })
+
+      console.log(this.state.clients);
   }).catch(error => {
       this.setState({
           isLoading: false
@@ -149,6 +152,10 @@ render(){
           let button = null
 
           const columns = [{
+            title: 'Nome',
+            dataIndex: 'user.name',
+            key: 'nome',
+          },{
             title: 'CPF',
             dataIndex: 'cpf',
             key: 'cpf',

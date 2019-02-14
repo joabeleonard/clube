@@ -30,7 +30,12 @@ class NewClient extends Component {
             numero:'',
             cidade:'',
             estado:'',
-            dataNascimento:''
+            dataNascimento:'',
+            nomeTitular:'',
+            numeroCartao:'',
+            codigoSeguranca:'',
+            bandeira:'',
+            dataValidade:''
         };
 
         if(this.props.location.client){
@@ -50,6 +55,11 @@ class NewClient extends Component {
                 complemento:this.props.location.client.complemento,
                 cidade:this.props.location.client.cidade,
                 estado:this.props.location.client.estado,
+                nomeTitular:this.props.location.client.nomeTitular,
+                numeroCartao:this.props.location.client.numeroCartao,
+                codigoSeguranca:this.props.location.client.codigoSeguranca,
+                bandeira:this.props.location.client.bandeira,
+                dataValidade:this.props.location.client.dataValidade,
                 dataNascimento:moment(this.props.location.client.dataNascimento, dateFormat)
             };
         }
@@ -102,12 +112,18 @@ class NewClient extends Component {
                 complemento :this.state.complemento,
                 cidade:this.state.cidade,
                 estado:this.state.estado,
-                dataNascimento:this.state.dataNascimento
+                dataNascimento:this.state.dataNascimento,
+                nomeTitular:this.state.nomeTitular,
+                numeroCartao:this.state.numeroCartao,
+                codigoSeguranca:this.state.codigoSeguranca,
+                bandeira:this.state.bandeira,
+                dataValidade:this.state.dataValidade
             };
 
             promise = editClient(clientData)
         }else{
-             
+            console.log(this.props.location.client);
+
             clientData= {
                 cpf:this.state.cpf,
                 nome: this.state.nome,
@@ -124,7 +140,12 @@ class NewClient extends Component {
 
                 cidade:this.state.cidade,
                 estado:this.state.estado,
-                dataNascimento:this.state.dataNascimento
+                dataNascimento:this.state.dataNascimento,
+                nomeTitular:this.state.nomeTitular,
+                numeroCartao:this.state.numeroCartao,
+                codigoSeguranca:this.state.codigoSeguranca,
+                bandeira:this.state.bandeira,
+                dataValidade:this.state.dataValidade
             };
  
             promise =  createClient(clientData);
@@ -136,7 +157,13 @@ class NewClient extends Component {
                 message: 'Boon',
                 description: "Cliente Cadastrado com sucesso.",
               });
-            this.props.history.push("/clientes");
+
+            if(this.props.authenticated){
+                this.props.history.push("/clientes");
+            }else{
+                this.props.history.push("/login");
+            }
+           
         }).catch(error => {
             console.log(error);
             if(error.status === 401) {
@@ -229,6 +256,35 @@ class NewClient extends Component {
 
                         </FormItem>
                      
+                        <FormItem>
+                              <Input placeholder="CPF" name="cpf"
+                               value = {this.state.cpf}
+                               onChange={this.handleInputChange} />         
+                        </FormItem>
+                        <FormItem>
+                              <Input placeholder="Bandeira" name="bandeira"
+                               value = {this.state.bandeira}
+                               onChange={this.handleInputChange} />         
+                        </FormItem>
+                        <FormItem>
+                              <Input placeholder="Nome do Titulas" name="nomeTitular"
+                               value = {this.state.nomeTitular}
+                               onChange={this.handleInputChange} />         
+                        </FormItem>
+                        <FormItem>
+                              <Input placeholder="Número Cartão" name="numeroCartao"
+                               value = {this.state.numeroCartao}
+                               onChange={this.handleInputChange} />         
+                        </FormItem>
+                        <FormItem>
+                              <Input placeholder="Data de Validade" name="dataValidade"
+                               value = {this.state.dataValidade}
+                               onChange={this.handleInputChange} />         
+                        </FormItem>  <FormItem>
+                              <Input placeholder="Código de Segurança" name="codigoSeguranca"
+                               value = {this.state.codigoSeguranca}
+                               onChange={this.handleInputChange} />         
+                        </FormItem>
                         <FormItem>
                             <Input type="password" placeholder="Senha" name="senha"
                             onChange={this.handleInputChange} 
