@@ -160,9 +160,9 @@ render(){
             dataIndex: 'cpf',
             key: 'cpf',
           }, {
-            title: 'Ativo',
-            dataIndex: 'ativo',
-            key: 'ativo',
+            title: 'Pontos - Experiência',
+            dataIndex: 'pontosExperiencia',
+            key: 'pontosExperiencia',
           }, {
             title: 'Pontos',
             dataIndex: 'pontos',

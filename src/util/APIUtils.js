@@ -108,7 +108,7 @@ export function createPoll(pollData) {
 
 export function createClient(clientData) {
     return request({
-        url: API_BASE_URL + "/clients",
+        url: API_BASE_URL + "/auth/signup",
         method: 'POST',
         body: JSON.stringify(clientData)         
     });
@@ -209,6 +209,14 @@ export function getUserVotedPolls(username, page, size) {
 
 }
 
+export function getCategorias() {
+    
+    return request({
+        url: API_BASE_URL + "/empresa/categorias" ,
+        method: 'GET'
+    });
+}
+
 export function getCupomByCliente(username, page, size) {
     page = page || 0;
     size = size || POLL_LIST_SIZE;
@@ -217,4 +225,6 @@ export function getCupomByCliente(username, page, size) {
         url: API_BASE_URL + "/cupom/cliente/" + username + "?page=" + page + "&size=" + size,
         method: 'GET'
     });
+
+    
 }

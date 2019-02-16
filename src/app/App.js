@@ -89,14 +89,14 @@ class App extends Component {
     this.props.history.push(redirectTo);
     
     notification[notificationType]({
-      message: 'Polling App',
+      message: 'Boon',
       description: description,
     });
   }
 
   handleLogin() {
     notification.success({
-      message: 'My Pass',
+      message: 'Boon',
       description: "Autenticação ocorreu com sucesso.",
     });
     this.loadCurrentUser();
@@ -119,8 +119,7 @@ class App extends Component {
             <MenuContent  currentUser={this.state.currentUser} />
               <Switch>      
                 <Route exact path="/" 
-                  render={(props) => <PollList isAuthenticated={this.state.isAuthenticated} 
-                      currentUser={this.state.currentUser} handleLogout={this.handleLogout} {...props} />}>
+                  render={(props) => <Login onLogin={this.handleLogin} {...props} />}>
                 </Route>
                 <Route path="/login" 
                   render={(props) => <Login onLogin={this.handleLogin} {...props} />}></Route>

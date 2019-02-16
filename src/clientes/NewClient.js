@@ -5,6 +5,7 @@ import './NewPoll.css';
 import { Form, Input, Button, Icon, Select, Col, notification, Tooltip, Radio, DatePicker } from 'antd';
 import moment from 'moment';
 import { formatDateTime } from '../util/Helpers';
+import LoadingIndicator  from '../common/LoadingIndicator';
 
 const Option = Select.Option;
 const FormItem = Form.Item;
@@ -35,7 +36,8 @@ class NewClient extends Component {
             numeroCartao:'',
             codigoSeguranca:'',
             bandeira:'',
-            dataValidade:''
+            dataValidade:'',
+            isLoading: false
         };
 
         if(this.props.location.client){
@@ -91,7 +93,11 @@ class NewClient extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        let clientData;   
+        let clientData; 
+        
+        this.setState({
+            isLoading: true
+        });
 
         let promise;
         if(this.props.location.client){
@@ -122,8 +128,7 @@ class NewClient extends Component {
 
             promise = editClient(clientData)
         }else{
-            console.log(this.props.location.client);
-
+             
             clientData= {
                 cpf:this.state.cpf,
                 nome: this.state.nome,
@@ -153,11 +158,15 @@ class NewClient extends Component {
 
         promise
         .then(response => {
+
+            this.setState({
+                isLoading: false
+            });
             notification.success({
                 message: 'Boon',
                 description: "Cliente Cadastrado com sucesso.",
               });
-
+console.log(this.props.authenticated);
             if(this.props.authenticated){
                 this.props.history.push("/clientes");
             }else{
@@ -165,21 +174,24 @@ class NewClient extends Component {
             }
            
         }).catch(error => {
-            console.log(error);
-            if(error.status === 401) {
-                this.props.handleLogout('/login', 'error', 'Erro, por favor tente novamente.');    
-            } else {
-                notification.error({
-                    message: 'Boon',
-                    description: error.message || 'Sorry! Something went wrong. Please try again!'
-                });              
-            }
+
+            this.setState({
+                isLoading: false
+            });
+            notification.error({
+                message: 'Boon',
+                description: error.message || 'Sorry! Something went wrong. Please try again!'
+            }); 
         });
     }
 
   
 
     render() {
+
+        if(this.state.isLoading) {
+            return <LoadingIndicator />;
+        }
         const choiceViews = [];
         
         const formItemLayout = {
@@ -256,11 +268,7 @@ class NewClient extends Component {
 
                         </FormItem>
                      
-                        <FormItem>
-                              <Input placeholder="CPF" name="cpf"
-                               value = {this.state.cpf}
-                               onChange={this.handleInputChange} />         
-                        </FormItem>
+                    
                         <FormItem>
                               <Input placeholder="Bandeira" name="bandeira"
                                value = {this.state.bandeira}
