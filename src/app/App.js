@@ -20,6 +20,7 @@ import NotFound from '../common/NotFound';
 import LoadingIndicator from '../common/LoadingIndicator';
 import PrivateRoute from '../common/PrivateRoute';
 import NewClient from '../clientes/NewClient';
+import LinkCadastro from '../clientes/LinkCadastro';
 import NewEmpresa from '../fornecedores/NewEmpresa';
 import ValidarCupom from '../fornecedores/ValidarCupom';
 
@@ -132,7 +133,9 @@ class App extends Component {
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresaList" component={EmpresaList} handleLogout={this.handleLogout} currentUser={this.state.currentUser}></PrivateRoute>
 
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresa/new" component={NewEmpresa} handleLogout={this.handleLogout}></PrivateRoute>
-                
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/compartilharLink"
+                     component={LinkCadastro} handleLogout={this.handleLogout} currentUser={this.state.currentUser} >
+                </PrivateRoute>
 
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/validarCodigo" component={ValidarCupom} handleLogout={this.handleLogout}></PrivateRoute>
 

@@ -153,6 +153,13 @@ export function checkUsernameAvailability(username) {
     });
 }
 
+export function getClientByUsername(username) {
+    return request({
+        url: API_BASE_URL + "/clients/username?username=" + username,
+        method: 'GET'
+    });
+}
+
 export function validarCupom(cupom) {
     return request({
         url: API_BASE_URL + "/cupom?cupom=" + cupom,

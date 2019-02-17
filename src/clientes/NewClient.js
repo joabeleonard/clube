@@ -37,7 +37,8 @@ class NewClient extends Component {
             codigoSeguranca:'',
             bandeira:'',
             dataValidade:'',
-            isLoading: false
+            isLoading: false,
+            codigoIndicacao:''
         };
 
         if(this.props.location.client){
@@ -150,9 +151,10 @@ class NewClient extends Component {
                 numeroCartao:this.state.numeroCartao,
                 codigoSeguranca:this.state.codigoSeguranca,
                 bandeira:this.state.bandeira,
-                dataValidade:this.state.dataValidade
+                dataValidade:this.state.dataValidade,
+                codigoIndicacao:this.state.codigoIndicacao
             };
- 
+            console.log(clientData);
             promise =  createClient(clientData);
         }
 
@@ -298,6 +300,13 @@ console.log(this.props.authenticated);
                             onChange={this.handleInputChange} 
                             prefix={<Icon type="lock" />}/>
                         </FormItem>
+                             <FormItem>
+                             <Input placeholder="Código de Indicação" name="codigoIndicacao"
+                               value = {this.state.codigoIndicacao}
+                               onChange={this.handleInputChange} />  
+                            
+                         </FormItem>
+                        
                      
                        
                         <FormItem className="poll-form-row">

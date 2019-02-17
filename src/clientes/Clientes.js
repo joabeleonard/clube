@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {notification, Form, Input, InputNumber, Button, Radio, Table,Popconfirm } from 'antd'
+import {notification, Form, Input, InputNumber, Button, Radio, Table,Popconfirm , Icon} from 'antd'
 import './Cliente.css';
 import {
   Link,
@@ -172,12 +172,12 @@ render(){
             key: 'action',
             render: (text, record) => (
               <span>
-                <a onClick={()=>this.handleUpdateClient(record)}>Editar</a>
+                <a onClick={()=>this.handleUpdateClient(record)}><Icon type="edit" /></a>
                 <span className="ant-divider" />
                 
               
             <Popconfirm title="Comfima exclusão?" onConfirm={() => this.handleDelete(record.id)}>
-              <a href="javascript:;">Apagar</a>
+              <a href="javascript:;"><Icon type="delete" /></a>
             </Popconfirm>
           
               </span>
