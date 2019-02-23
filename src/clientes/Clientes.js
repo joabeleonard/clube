@@ -134,24 +134,10 @@ render(){
           return <Redirect to={{
             pathname: '/client/new',
             client: {...this.state.client }
-        }} />
+          }} />
         }
 
-        const { formLayout } = this.state;
-
-        const layoutProps = { [formLayout]: true };
-
-        const formItemLayout = formLayout === 'horizontal' ? {
-            labelCol: { span: 4 },
-            wrapperCol: { span: 14 },
-          } : null;
-          const buttonItemLayout = formLayout === 'horizontal' ? {
-            wrapperCol: { span: 14, offset: 4 },
-          } : null;
-
-          let button = null
-
-          const columns = [{
+        const columns = [{
             title: 'Nome',
             dataIndex: 'user.name',
             key: 'nome',

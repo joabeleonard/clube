@@ -32,7 +32,12 @@ class MenuContent extends Component {
          <Link to="/clientes">
            <Icon type="user" />Clientes
          </Link>
-       </Menu.Item>       
+       </Menu.Item>,  
+       <Menu.Item key="/questionarios" >
+       <Link to="/questionarios">
+       <Icon type="question-circle" />Questionarios
+       </Link>
+     </Menu.Item>     
       ];
     }
 

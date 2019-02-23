@@ -1,4 +1,4 @@
-import { API_BASE_URL, POLL_LIST_SIZE,CLIENT_LIST_SIZE, ACCESS_TOKEN } from '../constants';
+import { API_BASE_URL, POLL_LIST_SIZE,CLIENT_LIST_SIZE,LIST_SIZE, ACCESS_TOKEN } from '../constants';
 
 const request = (options) => {
     const headers = new Headers({
@@ -43,10 +43,27 @@ export function getAllClients(page, size) {
     });
 }
 
+export function getAllQuestionarios(page, size) {
+    page = page || 0;
+    size = size || LIST_SIZE;
+
+    return request({
+        url: API_BASE_URL + "/questionarios?page=" + page + "&size=" + size,
+        method: 'GET'
+    });
+}
 export function removeClient(id) {
+    return request({
+       url: API_BASE_URL + "/clients/" + id,
+       method: 'DELETE'
+   });
+}
+
+export function desativarQuestionarios(data) {
      return request({
-        url: API_BASE_URL + "/clients/" + id,
-        method: 'DELETE'
+        url: API_BASE_URL + "/desativar" ,
+        method: 'put',
+        body: JSON.stringify(data) 
     });
 }
 

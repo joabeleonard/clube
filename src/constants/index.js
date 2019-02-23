@@ -4,6 +4,8 @@ export const ACCESS_TOKEN = 'accessToken';
 
 export const POLL_LIST_SIZE = 30;
 export const CLIENT_LIST_SIZE = 30;
+export const LIST_SIZE = 30;
+
 
 export const MAX_CHOICES = 6;
 export const POLL_QUESTION_MAX_LENGTH = 140;

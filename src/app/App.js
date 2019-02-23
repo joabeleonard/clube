@@ -11,6 +11,10 @@ import { ACCESS_TOKEN } from '../constants';
 
 import PollList from '../poll/PollList';
 import NewPoll from '../poll/NewPoll';
+import NewQuestionarios from '../questionario/NewQuestionario';
+import Questionarios from '../questionario/Questionario';
+
+
 import Login from '../user/login/Login';
 import Signup from '../user/signup/Signup';
 import Profile from '../user/profile/Profile';
@@ -131,6 +135,8 @@ class App extends Component {
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/poll/new" component={NewPoll} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresas" component={Fornecedores} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresaList" component={EmpresaList} handleLogout={this.handleLogout} currentUser={this.state.currentUser}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/questionarios" component={Questionarios} handleLogout={this.handleLogout} currentUser={this.state.currentUser}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/questionario/new" component={NewQuestionarios} handleLogout={this.handleLogout}></PrivateRoute>
 
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresa/new" component={NewEmpresa} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/compartilharLink"
