@@ -1,16 +1,23 @@
 import React, { Component } from 'react';
-import { createPoll } from '../util/APIUtils';
+import { createPoll, getAllEmpresas } from '../util/APIUtils';
 import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
 import './NewPoll.css';  
 import { Form, Input, Button, Icon, Select, Col, notification } from 'antd';
+import LoadingIndicator  from '../common/LoadingIndicator';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { TextArea } = Input
+
 
 class NewPoll extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            
+            empresas: [],
+            isLoading: false,
+            empresaId: null,
             question: {
                 text: ''
             },
@@ -31,7 +38,12 @@ class NewPoll extends Component {
         this.handleChoiceChange = this.handleChoiceChange.bind(this);
         this.handlePollDaysChange = this.handlePollDaysChange.bind(this);
         this.handlePollHoursChange = this.handlePollHoursChange.bind(this);
+        this.handleEmpresaChange = this.handleEmpresaChange.bind(this);
         this.isFormInvalid = this.isFormInvalid.bind(this);
+    }
+
+    componentDidMount() {
+        this.loadEmpresasList();
     }
 
     addChoice(event) {
@@ -51,8 +63,12 @@ class NewPoll extends Component {
     }
 
     handleSubmit(event) {
+        this.setState({
+            isLoading: true
+        });
         event.preventDefault();
         const pollData = {
+            empresaId : this.state.empresaId,
             question: this.state.question.text,
             choices: this.state.choices.map(choice => {
                 return {text: choice.text} 
@@ -62,8 +78,20 @@ class NewPoll extends Component {
 
         createPoll(pollData)
         .then(response => {
+            this.setState({
+                isLoading: false
+            });
+            notification.success({
+                message: 'Boon',
+                description: "Enquete Adicionada com sucesso.",
+              });
             this.props.history.push("/");
         }).catch(error => {
+
+            this.setState({
+                isLoading: false
+            });
+
             if(error.status === 401) {
                 this.props.handleLogout('/login', 'error', 'You have been logged out. Please login create poll.');    
             } else {
@@ -75,6 +103,38 @@ class NewPoll extends Component {
         });
     }
 
+    loadEmpresasList(){
+
+        
+        let promise;
+           promise = getAllEmpresas();
+         
+           if(!promise) {
+               return;
+           }
+         
+           this.setState({
+               isLoading: true
+           });
+           promise            
+           .then(response => {
+            console.log(response);
+               const empresas = this.state.empresas.slice();
+               this.setState({
+                   empresas: response.content,
+                   isLoading: false
+               })
+   
+              
+           }).catch(error => {
+               console.log(error);
+               this.setState({
+                   isLoading: false
+               })
+           });  
+           
+         }
+   
     validateQuestion = (questionText) => {
         if(questionText.length === 0) {
             return {
@@ -152,6 +212,12 @@ class NewPoll extends Component {
         });
     }
 
+    handleEmpresaChange(value) {
+        this.setState({
+            empresaId: value
+        });
+    }
+
     isFormInvalid() {
         if(this.state.question.validateStatus !== 'success') {
             return true;
@@ -166,6 +232,10 @@ class NewPoll extends Component {
     }
 
     render() {
+
+        if(this.state.isLoading) {
+            return <LoadingIndicator />;
+        }
         const choiceViews = [];
         this.state.choices.forEach((choice, index) => {
             choiceViews.push(<PollChoice key={index} choice={choice} choiceNumber={index} removeChoice={this.removeChoice} handleChoiceChange={this.handleChoiceChange}/>);
@@ -173,13 +243,24 @@ class NewPoll extends Component {
 
         return (
             <div className="new-poll-container">
-                <h1 className="page-title">Create Poll</h1>
+                <h1 className="page-title">Criar Enquete</h1>
                 <div className="new-poll-content">
                     <Form onSubmit={this.handleSubmit} className="create-poll-form">
+                           
+                        <FormItem>
+                             <Select
+                                placeholder="Selecione a Empresa"
+                                style={{ width: 120 }} name="empresa"
+                                onChange={this.handleEmpresaChange}>
+                                {this.state.empresas.map(empresa => <Option key={empresa.id} >{empresa.user.name}</Option>)}
+                            </Select>
+                       
+                        </FormItem>
+                            
                         <FormItem validateStatus={this.state.question.validateStatus}
                             help={this.state.question.errorMsg} className="poll-form-row">
                         <TextArea 
-                            placeholder="Enter your question"
+                            placeholder="Digite a enquete"
                             style = {{ fontSize: '16px' }} 
                             autosize={{ minRows: 3, maxRows: 6 }} 
                             name = "question"
@@ -189,14 +270,14 @@ class NewPoll extends Component {
                         {choiceViews}
                         <FormItem className="poll-form-row">
                             <Button type="dashed" onClick={this.addChoice} disabled={this.state.choices.length === MAX_CHOICES}>
-                                <Icon type="plus" /> Add a choice
+                                <Icon type="plus" /> Adicione Opção
                             </Button>
                         </FormItem>
                         <FormItem className="poll-form-row">
-                            <Col xs={24} sm={4}>
-                                Poll length: 
+                            <Col xs={24} sm={6}>
+                                Tempo da Enquete: 
                             </Col>
-                            <Col xs={24} sm={20}>    
+                            <Col xs={24} sm={10}>    
                                 <span style = {{ marginRight: '18px' }}>
                                     <Select 
                                         name="days"
@@ -209,7 +290,7 @@ class NewPoll extends Component {
                                                 <Option key={i}>{i}</Option>                                        
                                             )
                                         }
-                                    </Select> &nbsp;Days
+                                    </Select> &nbsp;Dias
                                 </span>
                                 <span>
                                     <Select 
@@ -223,7 +304,7 @@ class NewPoll extends Component {
                                                 <Option key={i}>{i}</Option>                                        
                                             )
                                         }
-                                    </Select> &nbsp;Hours
+                                    </Select> &nbsp;Horas
                                 </span>
                             </Col>
                         </FormItem>
@@ -232,7 +313,7 @@ class NewPoll extends Component {
                                 htmlType="submit" 
                                 size="large" 
                                 disabled={this.isFormInvalid()}
-                                className="create-poll-form-button">Create Poll</Button>
+                                className="create-poll-form-button">Criar Enquete</Button>
                         </FormItem>
                     </Form>
                 </div>    
@@ -246,7 +327,7 @@ function PollChoice(props) {
         <FormItem validateStatus={props.choice.validateStatus}
         help={props.choice.errorMsg} className="poll-form-row">
             <Input 
-                placeholder = {'Choice ' + (props.choiceNumber + 1)}
+                placeholder = {'Opção ' + (props.choiceNumber + 1)}
                 size="large"
                 value={props.choice.text} 
                 className={ props.choiceNumber > 1 ? "optional-choice": null}

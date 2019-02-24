@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {notification, Form, Input, InputNumber, Button, Radio, Table,Popconfirm , Icon} from 'antd'
-import { getAllQuestionarios, desativarQuestionarios} from '../util/APIUtils';
+import { getAllPolls, desativarQuestionarios} from '../util/APIUtils';
 import {
     Link,
     withRouter
@@ -36,7 +36,9 @@ class Questionario extends Component{
 
     loadQuestionariosList(page = 0, size = LIST_SIZE) {
         let promise;
-        promise = getAllQuestionarios(page, size);
+
+        promise = getAllPolls(page, size);
+
       
         if(!promise) {
             return;
@@ -48,7 +50,7 @@ class Questionario extends Component{
       
         promise            
         .then(response => {
-            const questionarios = this.state.clients.slice();
+            const questionarios = this.state.questionarios.slice();
             
             this.setState({
                 questionarios: questionarios.concat(response.content),
@@ -60,7 +62,7 @@ class Questionario extends Component{
                 isLoading: false,
                 editableClient: false
             })
-      
+            console.log(this.state.questionarios);
         }).catch(error => {
             this.setState({
                 isLoading: false
@@ -137,16 +139,16 @@ class Questionario extends Component{
         
         const columns = [{
             title: 'Empresa',
-            dataIndex: 'empresa',
+            dataIndex: 'empresa.user.name',
             key: 'empresa',
           },{
             title: 'Data de Criação',
-            dataIndex: 'dataCriacao',
-            key: 'dataCriacao',
+            dataIndex: 'creationDateTime',
+            key: 'creationDateTime',
           },{
             title: 'Data de Finalização ',
-            dataIndex: 'dataFim',
-            key: 'dataFim',
+            dataIndex: 'expirationDateTime',
+            key: 'expirationDateTime',
           }, {
             title: 'Quantidade de Respostas',
             dataIndex: 'quantRespostas',
@@ -181,7 +183,7 @@ class Questionario extends Component{
           </FormItem>
           <FormItem >
           <Button type="primary">
-          <Link to="/questionario/new">Novo Questionario
+          <Link to="/poll/new">Novo Questionario
           </Link>
           </Button>
           </FormItem>
@@ -189,7 +191,7 @@ class Questionario extends Component{
         </Form>
         <Table className="tableClient"
          rowKey={record => record.id} 
-         dataSource={this.state.clients}
+         dataSource={this.state.questionarios}
          rowClassName={() => 'editable-row'}
          bordered
           {...this.state.tableConfig} columns={columns}  />
