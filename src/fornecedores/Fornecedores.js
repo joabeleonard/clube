@@ -99,7 +99,7 @@ class Fornecedores extends Component{
           this.setState({ empresas: dataSource.filter(item => item.id !== id) });
       
           notification.success({
-            message: 'My Pass',
+            message: 'Boon',
             description: "Empresa Removido com sucesso.",
           });
       
@@ -110,7 +110,7 @@ class Fornecedores extends Component{
           console.log(error);
       
               notification.error({
-                message: 'My Pass',
+                message: 'Boon',
                 description: 'Ocorreu um erro. Por favor tente novamente!'
             }); 
             this.setState({

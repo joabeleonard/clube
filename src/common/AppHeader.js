@@ -5,7 +5,9 @@ import {
 } from 'react-router-dom';
 import './AppHeader.css';
 import pollIcon from '../poll.svg';
-import { Layout, Menu, Dropdown, Icon } from 'antd';
+import {loadCuponsUsados} from '../util/APIUtils';
+
+import { Layout, Menu, Dropdown, Icon,Modal, Button } from 'antd';
 
 const Header = Layout.Header;
     
@@ -14,10 +16,58 @@ class AppHeader extends Component {
     constructor(props) {
         super(props);   
         this.handleMenuClick = this.handleMenuClick.bind(this);   
+        this.loadCuponsUsados = this.loadCuponsUsados.bind(this);
 
         this.state = {
           menuOpen: false,
+          visible: false
         }
+    }
+
+    componentDidMount() {
+      this.loadCuponsUsados();
+    }
+
+    showModal = () => {
+      this.setState({
+        visible: true,
+      });
+    }
+  
+    handleOk = (e) => {
+      console.log(e);
+      this.setState({
+        visible: false,
+      });
+    }
+  
+    handleCancel = (e) => {
+      console.log(e);
+      this.setState({
+        visible: false,
+      });
+    }
+  
+    loadCuponsUsados(){
+  
+      this.setState({
+        isLoading: true
+      });
+      loadCuponsUsados()
+      .then(response => {
+
+        console.log(response);
+        this.setState({
+          cupom: response,
+          visible: true,
+          isLoading: false
+        });
+      }).catch(error => {
+        console.log(error);
+        this.setState({
+          isLoading: false
+        });  
+      });
     }
 
     handleMenuClick({ key }) {
@@ -67,9 +117,18 @@ class AppHeader extends Component {
         }
 
         return (
+
+         
             <Header className="app-header">
             <div className="container">
-            
+            <Modal title="Avaliacão de Consumo"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+            <p>Some contents...</p>
+          </Modal>
               <div className="app-title" >
              
                 <Link to="/">Clube de Vantagens</Link>

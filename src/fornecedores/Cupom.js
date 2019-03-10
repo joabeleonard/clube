@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Empresa.css';
-import {Form, Avatar, Icon, notification } from 'antd';
+import {Form, Avatar, Icon, notification ,Input} from 'antd';
 import { Link } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
@@ -21,11 +21,24 @@ class Cupom extends Component {
         super(props);
 
         this.state = {
-            isLoading: false
+            isLoading: false,
+            valorCupom: ''
         };
 
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+
     }
+
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        
+        this.setState({
+          [name]: value
+        });
+      }
 
     handleSubmit(event) {
         event.preventDefault();
@@ -35,6 +48,7 @@ class Cupom extends Component {
             isLoading: true
         });
        
+        this.props.cupom.valorCupom=this.state.valorCupom;
         console.log(this.props.cupom);
         promise =  usarCupom(this.props.cupom);
         promise
@@ -88,6 +102,11 @@ class Cupom extends Component {
                 </div>
                 <Form onSubmit={this.handleSubmit}>
                     <div className="poll-footer">
+                    <FormItem>
+                    <Input placeholder="Valor do cupom" name="valorCupom"
+                                value = {this.state.valorCupom}
+                               onChange={this.handleInputChange} />  
+                    </FormItem>
                     <FormItem className="poll-form-row">
                          <Button className="go-back-btn" type="primary"
                           htmlType="submit" size="large">

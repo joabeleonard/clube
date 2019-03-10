@@ -6,7 +6,7 @@ import {
   Switch
 } from 'react-router-dom';
 
-import { getCurrentUser } from '../util/APIUtils';
+import { getCurrentUser} from '../util/APIUtils';
 import { ACCESS_TOKEN } from '../constants';
 
 import PollList from '../poll/PollList';
@@ -32,11 +32,7 @@ import ValidarCupom from '../fornecedores/ValidarCupom';
 import Clientes from '../clientes/Clientes';
 import Fornecedores from '../fornecedores/Fornecedores';
 
-
-
-
-
-import { Layout, notification } from 'antd';
+import { Layout, notification,  } from 'antd';
 import EmpresaList from '../fornecedores/EmpresaList';
 import CuponsList from '../clientes/CuponsList';
 const { Content } = Layout;
@@ -48,7 +44,8 @@ class App extends Component {
     this.state = {
       currentUser: null,
       isAuthenticated: false,
-      isLoading: false
+      isLoading: false,
+      visible: false
     }
     this.handleLogout = this.handleLogout.bind(this);
     this.loadCurrentUser = this.loadCurrentUser.bind(this);
@@ -60,6 +57,7 @@ class App extends Component {
       duration: 3,
     });    
   }
+
 
   loadCurrentUser() {
     this.setState({
@@ -123,8 +121,9 @@ class App extends Component {
             
             <MenuContent  currentUser={this.state.currentUser} />
               <Switch>      
-                <Route exact path="/" 
-                  render={(props) => <Login onLogin={this.handleLogin} {...props} />}>
+              <Route exact path="/" 
+                  render={(props) => <PollList isAuthenticated={this.state.isAuthenticated} 
+                      currentUser={this.state.currentUser} handleLogout={this.handleLogout} {...props} />}>
                 </Route>
                 <Route path="/login" 
                   render={(props) => <Login onLogin={this.handleLogin} {...props} />}></Route>
