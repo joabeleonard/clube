@@ -49,7 +49,6 @@ class Cupom extends Component {
         });
        
         this.props.cupom.valorCupom=this.state.valorCupom;
-        console.log(this.props.cupom);
         promise =  usarCupom(this.props.cupom);
         promise
         .then(response => {
@@ -68,7 +67,7 @@ class Cupom extends Component {
                 this.props.handleLogout('/login', 'error', 'Você deve estar autenticado.');    
             } else {
                 notification.error({
-                    message: 'My pass',
+                    message: 'Boon',
                     description: error.message || 'Descupe! Ocorreu um erro. Tente novamente!'
                 });              
             }

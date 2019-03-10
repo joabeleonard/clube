@@ -99,6 +99,14 @@ export function createCupom(empresa, cliente) {
     });
 }
 
+export function editCupom(data) {
+    return request({
+        url: API_BASE_URL + "/cupom/avaliar",
+        method: 'PUT',
+        body: JSON.stringify(data)         
+    });
+}
+
 export function editEmpresa(data) {
     return request({
         url: API_BASE_URL + "/empresa",

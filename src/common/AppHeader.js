@@ -5,22 +5,33 @@ import {
 } from 'react-router-dom';
 import './AppHeader.css';
 import pollIcon from '../poll.svg';
-import {loadCuponsUsados} from '../util/APIUtils';
+import {loadCuponsUsados, editCupom} from '../util/APIUtils';
 
-import { Layout, Menu, Dropdown, Icon,Modal, Button } from 'antd';
+import { Layout, Menu, Dropdown, Icon,Modal, notification,Form, Input } from 'antd';
+import StarRatingComponent from 'react-star-rating-component';
+
 
 const Header = Layout.Header;
     
+const FormItem = Form.Item;
+
+const { TextArea } = Input
+
+
 
 class AppHeader extends Component {
     constructor(props) {
         super(props);   
         this.handleMenuClick = this.handleMenuClick.bind(this);   
         this.loadCuponsUsados = this.loadCuponsUsados.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
 
         this.state = {
+          cupom: [],
           menuOpen: false,
-          visible: false
+          visible: false,
+          rating: 1,
+          avaliacao: null
         }
     }
 
@@ -35,12 +46,46 @@ class AppHeader extends Component {
     }
   
     handleOk = (e) => {
-      console.log(e);
+      e.preventDefault();
+      let promise;
+
       this.setState({
-        visible: false,
+          isLoading: true
       });
-    }
-  
+     
+      this.state.cupom.descricaoAvaliacao = this.state.avaliacao;
+      promise =  editCupom(this.state.cupom);
+      promise
+      .then(response => {
+          notification.success({
+              message: 'Boon',
+              description: "Avaliação realizada com sucessos.",
+            });
+            this.setState({
+              isLoading: false,
+              visible: false
+          });
+      }).catch(error => {
+          this.setState({
+              isLoading: false
+          });
+          if(error.status === 401) {
+              this.props.handleLogout('/login', 'error', 'Você deve estar autenticado.');    
+          } else {
+              notification.error({
+                  message: 'Boon',
+                  description: error.message || 'Descupe! Ocorreu um erro. Tente novamente!'
+              });              
+          }
+      });
+  }
+
+  handleInputChange(event) {
+    const value = event.target.value;
+    this.setState({
+        avaliacao:value
+    });
+}
     handleCancel = (e) => {
       console.log(e);
       this.setState({
@@ -83,10 +128,18 @@ class AppHeader extends Component {
     closeMenu() {
       this.setState({ menuOpen: false })
     }
+
+    onStarClick(nextValue, prevValue, name) {
+      this.setState({rating: nextValue});
+      this.state.cupom.notaAvaliacao=nextValue;
+    }
   
 
     render() {
         let menuItems;
+
+        const { rating } = this.state;
+
         if(this.props.currentUser) {
           menuItems = [
             <Menu.Item key="/">
@@ -125,9 +178,22 @@ class AppHeader extends Component {
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
-            <p>Some contents...</p>
+              <h2>Avaliação da empresa: {this.state.cupom.empresa}</h2>
+              <StarRatingComponent 
+              name="rate1" 
+              starCount={10}
+              value={rating}
+              onStarClick={this.onStarClick.bind(this)} />
+
+                        <FormItem>
+                          <TextArea 
+                            placeholder="Qual sua avaliação?"
+                            style = {{ fontSize: '16px' }} 
+                            autosize={{ minRows: 3, maxRows: 6 }} 
+                            name = "avaliacao"
+                            value = {this.state.avaliacao}
+                            onChange = {this.handleInputChange} />
+                        </FormItem>
           </Modal>
               <div className="app-title" >
              
