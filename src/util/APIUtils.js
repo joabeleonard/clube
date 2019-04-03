@@ -77,6 +77,17 @@ export function getAllEmpresas(page, size) {
     });
 }
 
+export function pesquisarEmpresa(nome, categoria, page, size) {
+    page = page || 0;
+    size = size || CLIENT_LIST_SIZE;
+
+    return request({
+        url: API_BASE_URL + "/empresa/empresaSearch?nome=" + nome + "&categoria=" + categoria + "&page=" + page + "&size=" + size,
+        method: 'GET'
+    });
+}
+
+
 export function removeEmpresa(id) {
      return request({
         url: API_BASE_URL + "/empresa/" + id,

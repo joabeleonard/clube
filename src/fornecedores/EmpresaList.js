@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import { getAllEmpresas, getUserCreatedPolls, getUserVotedPolls } from '../util/APIUtils';
+import { getAllEmpresas, pesquisarEmpresa, getCategorias } from '../util/APIUtils';
 import Empresa from './Empresa';
 import { castVote } from '../util/APIUtils';
 import LoadingIndicator  from '../common/LoadingIndicator';
-import { Button, Icon, notification } from 'antd';
+import { Button, Icon, notification,Form, Input, Select } from 'antd';
 import { POLL_LIST_SIZE } from '../constants';
 import { withRouter } from 'react-router-dom';
 import './PollList.css';
+
+const Option = Select.Option;
+
 
 class EmpresaList extends Component {
     constructor(props) {
@@ -19,14 +22,32 @@ class EmpresaList extends Component {
             totalPages: 0,
             last: true,
             currentVotes: [],
-            isLoading: false
+            categorias: [],
+            isLoading: false,
+            nome: '',
+            categoria:''
         };
         this.loadEmpresaList = this.loadEmpresaList.bind(this);
+        this.loadCategoriaList = this.loadCategoriaList.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.searchHandleSubmit = this.searchHandleSubmit.bind(this);
+
+
     }
 
+    handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        
+        this.setState({
+          [name]: value
+        });
+      }
+
     loadEmpresaList(page = 0, size = POLL_LIST_SIZE) {
-        let promise = getAllEmpresas(page, size);;
+        let promise = getAllEmpresas(page, size);
   
         this.setState({
             isLoading: true
@@ -53,8 +74,39 @@ class EmpresaList extends Component {
         
     }
 
+    searchHandleSubmit(event) {
+        event.preventDefault();
+        
+        let promise;
+
+        let page = 0;
+        let size = POLL_LIST_SIZE;
+        
+        promise = pesquisarEmpresa( this.state.nome,
+            this.state.categoria, page, size)
+        promise
+        .then(response => {
+            const empresas = this.state.empresas.slice();
+
+            this.setState({
+                empresas: empresas.concat(response.content)});
+        }).catch(error => {
+            if(error.status === 401) {
+                this.props.handleLogout('/login', 'error', 'You have been logged out. Please login create poll.');    
+            } else {
+                notification.error({
+                    message: 'Boon',
+                    description: error.message || 'Sorry! Something went wrong. Please try again!'
+                });              
+            }
+        });
+    }
+
+
     componentDidMount() {
         this.loadEmpresaList();
+        this.loadCategoriaList();
+
     }
 
     componentDidUpdate(nextProps) {
@@ -126,6 +178,33 @@ class EmpresaList extends Component {
         });
     }
 
+    loadCategoriaList(){
+        let promise;
+           promise = getCategorias();
+         
+           if(!promise) {
+               return;
+           }
+         
+           this.setState({
+               isLoading: true
+           });
+           promise            
+           .then(response => {
+               const categorias = this.state.categorias.slice();
+               this.setState({
+                   categorias: response
+               })
+   
+           }).catch(error => {
+               console.log(error);
+               this.setState({
+                   isLoading: false
+               })
+           });  
+           
+         }   
+
     render() {
         console.log("Teste" + this.state.polls);
 
@@ -138,7 +217,32 @@ class EmpresaList extends Component {
         });
 
         return (
+
+            
             <div className="polls-container">
+            <Form layout="inline" onSubmit={this.searchHandleSubmit}>
+
+                 <Form.Item>      
+                        <Input  placeholder="Nome" name="nome"
+                           value = {this.state.nome}
+                          onChange={this.handleInputChange} />
+                </Form.Item>
+                <Form.Item>
+                    <Select
+                        style={{ width: 120 }} name="categoria"
+                        onChange={this.handleInputChange}>
+                        {this.state.categorias.map(categoria => <Option key={categoria}>{categoria}</Option>)}
+                        </Select>
+                </Form.Item>
+
+                 <Form.Item>
+                    <Button
+                        type="primary"
+                        htmlType="submit" >
+                       Pesquisar
+                    </Button>
+                    </Form.Item>
+            </Form>
                 {empresasViews}
                 {
                     !this.state.isLoading && this.state.empresas.length === 0 ? (

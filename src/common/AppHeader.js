@@ -7,7 +7,7 @@ import './AppHeader.css';
 import pollIcon from '../poll.svg';
 import {loadCuponsUsados, editCupom} from '../util/APIUtils';
 
-import { Layout, Menu, Dropdown, Icon,Modal, notification,Form, Input } from 'antd';
+import { Layout, Menu, Dropdown, Icon,Modal, notification,Form, Input,Upload } from 'antd';
 import StarRatingComponent from 'react-star-rating-component';
 
 
@@ -16,8 +16,24 @@ const Header = Layout.Header;
 const FormItem = Form.Item;
 
 const { TextArea } = Input
+const Dragger = Upload.Dragger;
 
-
+const uploadProps   = {
+  name: 'file',
+  multiple: true,
+  action: 'http://localhost:5000/api/arquivo/upload',
+  onChange(info) {
+    const status = info.file.status;
+    if (status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (status === 'done') {
+      notification.success(`${info.file.name} file uploaded successfully.`);
+    } else if (status === 'error') {
+      notification.error(`${info.file.name} file upload failed.`);
+    }
+  }
+};
 
 class AppHeader extends Component {
     constructor(props) {
@@ -135,6 +151,7 @@ class AppHeader extends Component {
     }
   
 
+
     render() {
         let menuItems;
 
@@ -147,11 +164,7 @@ class AppHeader extends Component {
                 <Icon type="home" className="nav-icon" />
               </Link>
             </Menu.Item>,
-            <Menu.Item key="/poll/new">
-            <Link to="/poll/new">
-              <img src={pollIcon} alt="poll" className="poll-icon" />
-            </Link>
-          </Menu.Item>,
+           
           <Menu.Item key="/profile" className="profile-menu">
                 <ProfileDropdownMenu 
                   currentUser={this.props.currentUser} 
@@ -194,6 +207,14 @@ class AppHeader extends Component {
                             value = {this.state.avaliacao}
                             onChange = {this.handleInputChange} />
                         </FormItem>
+
+                        <Dragger {...uploadProps}>
+                          <p className="ant-upload-drag-icon">
+                            <Icon type="inbox" />
+                          </p>
+                          <p className="ant-upload-text">Clique ou arraste o arquivo para essa area </p>
+                          <p className="ant-upload-hint">Adicione um arquivo que comprove o uso do cupom.</p>
+                        </Dragger>
           </Modal>
               <div className="app-title" >
              
