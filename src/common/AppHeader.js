@@ -28,7 +28,13 @@ const uploadProps   = {
       console.log(info.file, info.fileList);
     }
     if (status === 'done') {
-      notification.success(`${info.file.name} file uploaded successfully.`);
+      notification.success({
+        message: 'Boon',
+        description: "Arquivo enviado com sucesso.",
+      });
+
+      uploadProps.name = info.file.name;
+
     } else if (status === 'error') {
       notification.error(`${info.file.name} file upload failed.`);
     }
@@ -70,6 +76,7 @@ class AppHeader extends Component {
       });
      
       this.state.cupom.descricaoAvaliacao = this.state.avaliacao;
+      this.state.cupom.nomeArquivoComprovante = uploadProps.name;
       promise =  editCupom(this.state.cupom);
       promise
       .then(response => {
@@ -208,7 +215,7 @@ class AppHeader extends Component {
                             onChange = {this.handleInputChange} />
                         </FormItem>
 
-                        <Dragger {...uploadProps}>
+                        <Dragger {...uploadProps} reName={this.state.cupom.codigo} >
                           <p className="ant-upload-drag-icon">
                             <Icon type="inbox" />
                           </p>

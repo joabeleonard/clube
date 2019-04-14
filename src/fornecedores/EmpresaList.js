@@ -15,6 +15,7 @@ class EmpresaList extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            cupom:[],
             empresas: [],
             page: 0,
             size: 10,
@@ -24,15 +25,14 @@ class EmpresaList extends Component {
             currentVotes: [],
             categorias: [],
             isLoading: false,
-            nome: '',
+            nome: null,
             categoria:''
         };
         this.loadEmpresaList = this.loadEmpresaList.bind(this);
-        this.loadCategoriaList = this.loadCategoriaList.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.searchHandleSubmit = this.searchHandleSubmit.bind(this);
-
+        this.handleInputChangeCategoria = this.handleInputChangeCategoria.bind(this);
 
     }
 
@@ -45,7 +45,12 @@ class EmpresaList extends Component {
           [name]: value
         });
       }
-
+      handleInputChangeCategoria(value) {   
+        this.setState({
+          categoria: value
+        });
+      }
+      
     loadEmpresaList(page = 0, size = POLL_LIST_SIZE) {
         let promise = getAllEmpresas(page, size);
   
@@ -77,6 +82,9 @@ class EmpresaList extends Component {
     searchHandleSubmit(event) {
         event.preventDefault();
         
+        this.setState({
+            isLoading: true
+        });
         let promise;
 
         let page = 0;
@@ -86,10 +94,17 @@ class EmpresaList extends Component {
             this.state.categoria, page, size)
         promise
         .then(response => {
-            const empresas = this.state.empresas.slice();
-
+            const empresasFilter = [];
+            console.log(empresasFilter);
             this.setState({
-                empresas: empresas.concat(response.content)});
+                empresas: empresasFilter.concat(response.content),
+                page: response.page,
+                size: response.size,
+                totalElements: response.totalElements,
+                totalPages: response.totalPages,
+                last: response.last,
+                isLoading: false
+            })
         }).catch(error => {
             if(error.status === 401) {
                 this.props.handleLogout('/login', 'error', 'You have been logged out. Please login create poll.');    
@@ -206,13 +221,18 @@ class EmpresaList extends Component {
          }   
 
     render() {
-        console.log("Teste" + this.state.polls);
+
+        if(this.state.isLoading) {
+            return <LoadingIndicator />;
+        }
+
 
         const empresasViews = [];
         this.state.empresas.forEach((empresa, empresaIndex) => {
             empresasViews.push(<Empresa  currentUser={this.props.currentUser}
                 key={empresa.id} 
                 empresa={empresa}
+                cupom={[]}
                  />)            
         });
 
@@ -230,7 +250,7 @@ class EmpresaList extends Component {
                 <Form.Item>
                     <Select
                         style={{ width: 120 }} name="categoria"
-                        onChange={this.handleInputChange}>
+                        onChange={this.handleInputChangeCategoria}>
                         {this.state.categorias.map(categoria => <Option key={categoria}>{categoria}</Option>)}
                         </Select>
                 </Form.Item>

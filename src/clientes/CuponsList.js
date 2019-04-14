@@ -64,7 +64,6 @@ class CuponsList extends Component{
 
     
     render(){
-        console.log(this.state.cupons);
         if(this.state.isLoading) {
             return <LoadingIndicator />;
         }

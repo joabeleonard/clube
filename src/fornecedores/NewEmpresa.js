@@ -3,6 +3,8 @@ import { createEmpresa, editEmpresa, getCategorias } from '../util/APIUtils';
 import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
 import './NewPoll.css';  
 import { Form, Input, Button, Icon, Select, Col, notification, Tooltip, Cascader  } from 'antd';
+import LoadingIndicator  from '../common/LoadingIndicator';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { TextArea } = Input
@@ -46,11 +48,13 @@ class NewEmpresa extends Component {
                 complemento:this.props.location.empresa.complemento,
                 bairro:this.props.location.empresa.bairro,
                 estado:this.props.location.empresa.estado,
-                cidade:this.props.location.empresa.cidade
+                cidade:this.props.location.empresa.cidade,
+                categorias: []
             };
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChangeCategoria = this.handleInputChangeCategoria.bind(this);
     }
 
     componentDidMount() {
@@ -87,6 +91,12 @@ class NewEmpresa extends Component {
         
       }
 
+    handleInputChangeCategoria(value) {   
+        this.setState({
+          categoria: value
+        });
+    }
+
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -111,7 +121,7 @@ class NewEmpresa extends Component {
                 id:this.props.location.empresa.id,
                 razaoSocial:this.state.razaoSocial,
                 cnpj:this.state.cnpj,
-                categoria:this.state.categoria,
+                categoriaEmpresa:this.state.categoria,
                 dotBack:this.state.dotBack,
                 logradouro:this.state.logradouro,
                 numero:this.state.numero,
@@ -130,7 +140,7 @@ class NewEmpresa extends Component {
                 email:this.state.email,
                 razaoSocial:this.state.razaoSocial,
                 cnpj:this.state.cnpj,
-                categoria:this.state.categoria,
+                categoriaEmpresa:this.state.categoria,
                 dotBack:this.state.dotBack,
                 logradouro:this.state.logradouro,
                 numero:this.state.numero,
@@ -185,6 +195,10 @@ class NewEmpresa extends Component {
  
 
     render() {
+
+        if(this.state.isLoading) {
+            return <LoadingIndicator />;
+        }
         const choiceViews = [];
         
         const formItemLayout = {
@@ -222,7 +236,7 @@ class NewEmpresa extends Component {
 
                           <Select
                             style={{ width: 120 }} name="categoria"
-                            onChange={this.handleInputChange}>
+                            onChange={this.handleInputChangeCategoria}>
                             {this.state.categorias.map(categoria => <Option key={categoria}>{categoria}</Option>)}
                             </Select>
                        

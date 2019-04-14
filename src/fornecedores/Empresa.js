@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import './Empresa.css';
-import {Form, Avatar, Icon, notification } from 'antd';
+import {Form, Avatar, Icon, notification, Modal } from 'antd';
 import { Link } from 'react-router-dom';
 import { getAvatarColor } from '../util/Colors';
 import { formatDateTime } from '../util/Helpers';
 import { createCupom } from '../util/APIUtils';
+import LoadingIndicator  from '../common/LoadingIndicator';
 
 
 
@@ -18,6 +19,11 @@ class Empresa extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {
+            codigo: '',
+            visible:false,
+            isLoading:false
+        }
     }
 
     handleSubmit(event) {
@@ -31,18 +37,22 @@ class Empresa extends Component {
         promise
         .then(response => {
             notification.success({
-                message: 'My pass',
+                message: 'Boon',
                 description: "Cupom Gerado com Sucesso.",
               });
+              console.log(response);
               this.setState({
-                isLoading: false
+                visible:true,
+                isLoading: false,
+                codigo:response.codigo
             });
+            
         }).catch(error => {
             if(error.status === 401) {
                 this.props.handleLogout('/login', 'error', 'Você deve estar autenticado.');    
             } else {
                 notification.error({
-                    message: 'My pass',
+                    message: 'Boon',
                     description: error.message || 'Descupe! Ocorreu um erro. Tente novamente!'
                 });              
             }
@@ -94,11 +104,35 @@ class Empresa extends Component {
         return timeRemaining;
     }
 
+    handleOk = (e) => {
+        this.setState({
+          visible: false,
+        });
+      }
+
+      handleCancel = (e) => {
+        console.log(e);
+        this.setState({
+          visible: false,
+        });
+      }
+
     render() {
       
+        if(this.state.isLoading) {
+            return <LoadingIndicator />;
+        }
         return (
             <div className="poll-content">
                 <div className="poll-header">
+
+            <Modal title="Cupom gerado."
+                visible={this.state.visible}
+                onOk={this.handleOk}
+                onCancel={this.handleCancel}>
+                    <h2>Seu cupom é: {this.state.codigo}</h2>
+                    
+            </Modal>
                     <div className="poll-creator-info">
                         <Link className="creator-link" to={'/users/'}>
                             <Avatar className="poll-creator-avatar" 
