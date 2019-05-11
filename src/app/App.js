@@ -35,6 +35,8 @@ import Fornecedores from '../fornecedores/Fornecedores';
 import { Layout, notification,  } from 'antd';
 import EmpresaList from '../fornecedores/EmpresaList';
 import CuponsList from '../clientes/CuponsList';
+import Home from '../clientes/Home';
+import Extratos from '../clientes/Extratos';
 const { Content } = Layout;
 
 
@@ -102,10 +104,10 @@ class App extends Component {
   handleLogin() {
     notification.success({
       message: 'Boon',
-      description: "Autenticação ocorreu com sucesso.",
+      description: "Autenticação ocorreu com sucesso."
     });
     this.loadCurrentUser();
-    this.props.history.push("/");
+    this.props.history.push("/home");
   }
 
   render() {
@@ -133,12 +135,15 @@ class App extends Component {
                 <Route path="/users/:username" 
                   render={(props) => <Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
                 </Route>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/home" component={Home} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/poll/new" component={NewPoll} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresas" component={Fornecedores} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresaList" component={EmpresaList} handleLogout={this.handleLogout} currentUser={this.state.currentUser}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/questionarios" component={Questionarios} handleLogout={this.handleLogout} currentUser={this.state.currentUser}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/questionario/new" component={NewQuestionarios} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/extrato" component={Extratos} handleLogout={this.handleLogout} currentUser={this.state.currentUser}></PrivateRoute>
 
+                
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresa/new" component={NewEmpresa} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/compartilharLink"
                      component={LinkCadastro} handleLogout={this.handleLogout} currentUser={this.state.currentUser} >

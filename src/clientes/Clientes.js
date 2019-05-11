@@ -20,7 +20,7 @@ class Clientes extends Component{
   constructor(props) {
     super(props);
     this.state = {
-        clients: [],
+        extrato: [],
         page: 0,
         size: 10,
         totalElements: 0,
@@ -31,10 +31,10 @@ class Clientes extends Component{
         formLayout: 'vertical',
             search: ''
     };
-    this.loadClientList = this.loadClientList.bind(this);
+    this.loadExtratoList = this.loadExtratoList.bind(this);
 }
 
-loadClientList(page = 0, size = CLIENT_LIST_SIZE) {
+loadExtratoList(page = 0, size = CLIENT_LIST_SIZE) {
   let promise;
   promise = getAllClients(page, size);
 

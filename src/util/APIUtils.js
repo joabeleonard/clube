@@ -218,6 +218,22 @@ export function loadCuponsUsados(){
         method: 'GET'
     });
 }
+
+export function getRankingDot(){
+    return request({
+        url: API_BASE_URL + "/clients/rankingDot",
+        method: 'GET'
+    });
+}
+
+export function getRankingExperiencia(){
+    return request({
+        url: API_BASE_URL + "/clients/rankingExperiencia",
+        method: 'GET'
+    });
+}
+
+
 export function getCurrentUser() {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
         return Promise.reject("No access token set.");

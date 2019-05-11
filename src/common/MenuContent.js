@@ -55,6 +55,11 @@ class MenuContent extends Component {
            <Icon type="user" />Minhas Compras
          </Link>
        </Menu.Item>,   
+       <Menu.Item key="/extrato" >
+       <Link to="/extrato">
+       <Icon type="profile" />Extrato
+       </Link>
+     </Menu.Item>,
        <Menu.Item key="/compartilharLink" >
        <Link to="/compartilharLink">
         <Icon type="share-alt" />Compartilhar Link
