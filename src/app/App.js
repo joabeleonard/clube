@@ -37,6 +37,7 @@ import EmpresaList from '../fornecedores/EmpresaList';
 import CuponsList from '../clientes/CuponsList';
 import Home from '../clientes/Home';
 import Extratos from '../clientes/Extratos';
+import Relatorios from '../fornecedores/Relatorios';
 const { Content } = Layout;
 
 
@@ -150,7 +151,9 @@ class App extends Component {
                 </PrivateRoute>
 
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/validarCodigo" component={ValidarCupom} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/relatorios" component={Relatorios} handleLogout={this.handleLogout}></PrivateRoute>
 
+                
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/clientes" component={Clientes} handleLogout={this.handleLogout}></PrivateRoute>
                 <Route  path="/client/new" authenticated={this.state.isAuthenticated} component={NewClient} ></Route>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/minhasCompras" component={CuponsList} handleLogout={this.handleLogout} currentUser={this.state.currentUser} ></PrivateRoute>

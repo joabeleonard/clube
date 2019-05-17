@@ -67,6 +67,18 @@ export function desativarQuestionarios(data) {
     });
 }
 
+
+export function getExtrato(page, size) {
+    page = page || 0;
+    size = size || CLIENT_LIST_SIZE;
+
+    return request({
+        url: API_BASE_URL + "/extrato?page=" + page + "&size=" + size,
+        method: 'GET'
+    });
+}
+
+
 export function getAllEmpresas(page, size) {
     page = page || 0;
     size = size || CLIENT_LIST_SIZE;

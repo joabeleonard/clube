@@ -77,7 +77,7 @@ class MenuContent extends Component {
        </Menu.Item>,
        <Menu.Item key="/relatorios" >
          <Link to="/relatorios">
-           <Icon type="user" />Relatório
+           <Icon type="user" />Relatórios
          </Link>
        </Menu.Item>       
       ];

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { getAllEmpresas, pesquisarEmpresa, getCategorias } from '../util/APIUtils';
+import { getExtrato } from '../util/APIUtils';
 import { castVote } from '../util/APIUtils';
 import LoadingIndicator  from '../common/LoadingIndicator';
-import { Button, Icon, notification,Form, Input, Select } from 'antd';
+import { Button, Icon, notification,Form, Input, Select, List } from 'antd';
 import { POLL_LIST_SIZE } from '../constants';
 import { withRouter } from 'react-router-dom';
 import './Cliente.css';
@@ -15,7 +15,7 @@ class Extratos extends Component {
         super(props);
         this.state = {
             cupom:[],
-            empresas: [],
+            extrato: [],
             page: 0,
             size: 10,
             totalElements: 0,
@@ -27,10 +27,9 @@ class Extratos extends Component {
             nome: null,
             categoria:''
         };
-        this.loadEmpresaList = this.loadEmpresaList.bind(this);
+        this.loadExtratoList = this.loadExtratoList.bind(this);
         this.handleLoadMore = this.handleLoadMore.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.searchHandleSubmit = this.searchHandleSubmit.bind(this);
         this.handleInputChangeCategoria = this.handleInputChangeCategoria.bind(this);
 
     }
@@ -50,8 +49,8 @@ class Extratos extends Component {
         });
       }
       
-    loadEmpresaList(page = 0, size = POLL_LIST_SIZE) {
-        let promise = getAllEmpresas(page, size);
+    loadExtratoList(page = 0, size = POLL_LIST_SIZE) {
+        let promise = getExtrato(page, size);
   
         this.setState({
             isLoading: true
@@ -59,10 +58,10 @@ class Extratos extends Component {
 
         promise            
         .then(response => {
-            const empresas = this.state.empresas.slice();
-
+            const extrato = this.state.extrato.slice();
+            console.log(response);
             this.setState({
-                empresas: empresas.concat(response.content),
+                extrato: extrato.concat(response.content),
                 page: response.page,
                 size: response.size,
                 totalElements: response.totalElements,
@@ -78,48 +77,10 @@ class Extratos extends Component {
         
     }
 
-    searchHandleSubmit(event) {
-        event.preventDefault();
-        
-        this.setState({
-            isLoading: true
-        });
-        let promise;
-
-        let page = 0;
-        let size = POLL_LIST_SIZE;
-        
-        promise = pesquisarEmpresa( this.state.nome,
-            this.state.categoria, page, size)
-        promise
-        .then(response => {
-            const empresasFilter = [];
-            console.log(empresasFilter);
-            this.setState({
-                empresas: empresasFilter.concat(response.content),
-                page: response.page,
-                size: response.size,
-                totalElements: response.totalElements,
-                totalPages: response.totalPages,
-                last: response.last,
-                isLoading: false
-            })
-        }).catch(error => {
-            if(error.status === 401) {
-                this.props.handleLogout('/login', 'error', 'You have been logged out. Please login create poll.');    
-            } else {
-                notification.error({
-                    message: 'Boon',
-                    description: error.message || 'Sorry! Something went wrong. Please try again!'
-                });              
-            }
-        });
-    }
-
+   
 
     componentDidMount() {
-        this.loadEmpresaList();
-        this.loadCategoriaList();
+        this.loadExtratoList();
 
     }
 
@@ -136,12 +97,12 @@ class Extratos extends Component {
                 currentVotes: [],
                 isLoading: false
             });    
-            this.loadPollList();
+            this.loadExtratoList();
         }
     }
 
     handleLoadMore() {
-        this.loadPollList(this.state.page + 1);
+        this.loadExtratoList(this.state.page + 1);
     }
 
     handleVoteChange(event, pollIndex) {
@@ -192,54 +153,32 @@ class Extratos extends Component {
         });
     }
 
-    loadCategoriaList(){
-        let promise;
-           promise = getCategorias();
-         
-           if(!promise) {
-               return;
-           }
-         
-           this.setState({
-               isLoading: true
-           });
-           promise            
-           .then(response => {
-               const categorias = this.state.categorias.slice();
-               this.setState({
-                   categorias: response
-               })
-   
-           }).catch(error => {
-               console.log(error);
-               this.setState({
-                   isLoading: false
-               })
-           });  
-           
-         }   
-
+    
     render() {
 
         if(this.state.isLoading) {
             return <LoadingIndicator />;
         }
-
-
-  
-
         return (
-
-            
-            <div className="polls-container">
-            
+        
+            <div className="polls-container">            
                 {
-                    !this.state.isLoading && this.state.empresas.length === 0 ? (
+                    !this.state.isLoading && this.state.extrato.length === 0 ? (
                         <div className="no-polls-found">
-                            <span>Empresas não encontradas.</span>
+                            <span>Extrato vazio.</span>
                         </div>    
                     ): null
                 }  
+                 <List
+                    size="large"
+                    header={<div>Extrato</div>}
+                    bordered
+                    dataSource={this.state.extrato}
+                    renderItem={item => <List.Item><div>{item.data}</div>
+                    <div>{item.pontos}</div>
+                    <div>{item.pontosExperiencia}</div>
+                    <div>{item.descricao}</div></List.Item>}
+                    />
                 {
                     !this.state.isLoading && !this.state.last ? (
                         <div className="load-more-polls"> 
