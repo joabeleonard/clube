@@ -231,6 +231,21 @@ export function loadCuponsUsados(){
     });
 }
 
+export function getDataReportAvaliacoes(){
+    return request({
+        url: API_BASE_URL + "/reports/dataReportAvaliacoes",
+        method: 'GET'
+    });
+}
+
+export function getDataReportVendas(){
+    return request({
+        url: API_BASE_URL + "/reports/dataReportVendas",
+        method: 'GET'
+    });
+}
+
+
 export function getRankingDot(){
     return request({
         url: API_BASE_URL + "/clients/rankingDot",
