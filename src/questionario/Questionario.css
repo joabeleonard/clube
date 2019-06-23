@@ -49,18 +49,17 @@
 .vote-button {
     border-radius: 15px;
     margin-right: 15px;
-    color: #40a9ff;
-    border-color: #40a9ff;
+    color: 	#FEA309;
+    border-color: 	#FEA309;
 }
 
 .vote-button:hover {
-    color: #1890ff;
-    border-color: #1890ff;    
+    color: #F46102;
+    border-color: #F46102;    
 }
 
 .vote-button[disabled], .vote-button[disabled]:hover, .vote-button[disabled]:focus {
-    color: #40a9ff;
-    border-color: #40a9ff;
+    color: 	#FEA309;
     background-color: #fff;
     opacity: 0.4;
 }
@@ -140,7 +139,7 @@
 }
 
 .poll-creator-info .creator-link:hover .poll-creator-name {
-    color: #1890ff;
+    color: #F46102;
     text-decoration: underline;
 }
 

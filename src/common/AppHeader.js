@@ -225,7 +225,7 @@ class AppHeader extends Component {
           </Modal>
               <div className="app-title" >
              
-                <Link to="/">Clube de Vantagens</Link>
+                <Link to="/"><img src="logo.png"/> </Link>
                 
               </div>
 
