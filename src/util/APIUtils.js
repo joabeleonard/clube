@@ -43,6 +43,36 @@ export function getAllClients(page, size) {
     });
 }
 
+export function getAllPersonagens(page, size) {
+    page = page || 0;
+    size = size || CLIENT_LIST_SIZE;
+
+    return request({
+        url: API_BASE_URL + "/personagens?page=" + page + "&size=" + size,
+        method: 'GET'
+    });
+}
+
+export function getAllEtapas(page, size) {
+    page = page || 0;
+    size = size || CLIENT_LIST_SIZE;
+
+    return request({
+        url: API_BASE_URL + "/etapas?page=" + page + "&size=" + size,
+        method: 'GET'
+    });
+}
+
+export function getAllDicas(page, size) {
+    page = page || 0;
+    size = size || CLIENT_LIST_SIZE;
+
+    return request({
+        url: API_BASE_URL + "/dicas?page=" + page + "&size=" + size,
+        method: 'GET'
+    });
+}
+
 export function getAllQuestionarios(page, size) {
     page = page || 0;
     size = size || LIST_SIZE;

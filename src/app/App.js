@@ -38,6 +38,12 @@ import CuponsList from '../clientes/CuponsList';
 import Home from '../clientes/Home';
 import Extratos from '../clientes/Extratos';
 import Relatorios from '../fornecedores/Relatorios';
+import Etapas from '../game/Etapas';
+import Dicas from '../game/Dicas';
+import Personagens from '../game/Personagens';
+import NewEtapa from '../game/NewEtapa';
+import NewDica from '../game/NewDica';
+import NewPersonagem from '../game/NewPersonagem';
 const { Content } = Layout;
 
 
@@ -138,10 +144,18 @@ class App extends Component {
                 </Route>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/home" component={Home} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/poll/new" component={NewPoll} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/personagens" component={Personagens} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/etapas" component={Etapas} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/dicas" component={Dicas} handleLogout={this.handleLogout}></PrivateRoute>
+
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresas" component={Fornecedores} handleLogout={this.handleLogout}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/empresaList" component={EmpresaList} handleLogout={this.handleLogout} currentUser={this.state.currentUser}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/questionarios" component={Questionarios} handleLogout={this.handleLogout} currentUser={this.state.currentUser}></PrivateRoute>
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/questionario/new" component={NewQuestionarios} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/personagem/new" component={NewPersonagem} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/etapa/new" component={NewEtapa} handleLogout={this.handleLogout}></PrivateRoute>
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/dica/new" component={NewDica} handleLogout={this.handleLogout}></PrivateRoute>
+
                 <PrivateRoute authenticated={this.state.isAuthenticated} path="/extrato" component={Extratos} handleLogout={this.handleLogout} currentUser={this.state.currentUser}></PrivateRoute>
 
                 

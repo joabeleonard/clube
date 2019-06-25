@@ -39,7 +39,23 @@ class MenuContent extends Component {
        <Link to="/questionarios">
        <Icon type="question-circle" />Questionarios
        </Link>
-     </Menu.Item>     
+     </Menu.Item>  ,
+     <Menu.Item key="/personagens" >
+        <Link to="/personagens">
+        <Icon type="question-circle" />Personagens
+        </Link>
+    </Menu.Item> ,
+     <Menu.Item key="/etapas" >
+        <Link to="/etapas">
+        <Icon type="question-circle" />Etapas (Game)
+        </Link>
+    </Menu.Item>   
+   ,
+   <Menu.Item key="/dicas" >
+        <Link to="/dicas">
+        <Icon type="question-circle" />Dicas
+        </Link>
+    </Menu.Item>     
       ];
     }
 
