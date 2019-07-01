@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {notification, Form, Input, InputNumber, Button, Radio, Table,Popconfirm , Icon} from 'antd'
-import './Cliente.css';
+import './Etapa.css';
 import {
   Link,
   withRouter
 } from 'react-router-dom';
 import { CLIENT_LIST_SIZE } from '../constants';
-import { getAllClients, removeClient} from '../util/APIUtils';
+import { getAllEtapas} from '../util/APIUtils';
 import LoadingIndicator  from '../common/LoadingIndicator';
 import  { Redirect } from 'react-router-dom'
 
@@ -31,12 +31,12 @@ class Etapas extends Component{
         formLayout: 'vertical',
             search: ''
     };
-    this.loadExtratoList = this.loadExtratoList.bind(this);
+    this.loadEtapaList = this.loadEtapaList.bind(this);
 }
 
-loadExtratoList(page = 0, size = CLIENT_LIST_SIZE) {
+loadEtapaList(page = 0, size = CLIENT_LIST_SIZE) {
   let promise;
-  promise = getAllClients(page, size);
+  promise = getAllEtapas(page, size);
 
   if(!promise) {
       return;
@@ -48,20 +48,20 @@ loadExtratoList(page = 0, size = CLIENT_LIST_SIZE) {
 
   promise            
   .then(response => {
-      const clients = this.state.clients.slice();
+      const etapas = this.state.etapas.slice();
       
       this.setState({
-          clients: clients.concat(response.content),
+          etapas: etapas.concat(response.content),
           page: response.page,
           size: response.size,
           totalElements: response.totalElements,
           totalPages: response.totalPages,
           last: response.last,
           isLoading: false,
-          editableClient: false
+          editableEtapa: false
       })
 
-      console.log(this.state.clients);
+      console.log(this.state.etapas);
   }).catch(error => {
       this.setState({
           isLoading: false
@@ -71,58 +71,18 @@ loadExtratoList(page = 0, size = CLIENT_LIST_SIZE) {
 }
  
 componentDidMount() {
-  this.loadClientList();
+  this.loadEtapaList();
 }
 
-handleUpdateClient = (client) =>{
+handleUpdateEtapa = (etapa) =>{
   
    this.setState({
-    client:client,
-    editableClient:true
+    etapa:etapa,
+    editableEtapa:true
   });
 }
 
-handleDelete = (id) => {
 
-  const dataSource = [...this.state.clients];
-  
-  let promise;
-  promise = removeClient(id);
-
-  if(!promise) {
-      return;
-  }
-
-  this.setState({
-      isLoading: true
-  });
-  
-  promise            
-  .then(response => {
-    console.log(response);
-    this.setState({ clients: dataSource.filter(item => item.id !== id) });
-
-    notification.success({
-      message: 'Boon',
-      description: "Cliente Removido com sucesso.",
-    });
-
-    this.setState({
-      isLoading: false
-  });
-  }).catch(error => {
-    console.log(error);
-
-        notification.error({
-          message: 'Boon',
-          description: 'Ocorreu um erro. Por favor tente novamente!'
-      }); 
-      this.setState({
-          isLoading: false
-      });
-  });  
-   
-}
 
 render(){
 
@@ -130,10 +90,10 @@ render(){
             return <LoadingIndicator />;
         }
 
-        if (this.state.editableClient === true) {
+        if (this.state.editableEtapa === true) {
           return <Redirect to={{
-            pathname: '/client/new',
-            client: {...this.state.client }
+            pathname: '/etapa/new',
+            etapa: {...this.state.etapa }
           }} />
         }
 
@@ -158,19 +118,14 @@ render(){
             key: 'action',
             render: (text, record) => (
               <span>
-                <a onClick={()=>this.handleUpdateClient(record)}><Icon type="edit" /></a>
+                <a onClick={()=>this.handleUpdateEtapa(record)}><Icon type="edit" /></a>
                 <span className="ant-divider" />
-                
-              
-            <Popconfirm title="Comfima exclusão?" onConfirm={() => this.handleDelete(record.id)}>
-              <a href="javascript:;"><Icon type="delete" /></a>
-            </Popconfirm>
           
               </span>
             ),
           }];
         return  <div className="new-client-container">
-         <h1 className="page-title">Gerenciamento de Clientes</h1>
+         <h1 className="page-title">Gerenciamento de Etapas - Game</h1>
          <Form  layout="inline">
          
           <FormItem >
@@ -183,15 +138,15 @@ render(){
           </FormItem>
           <FormItem >
           <Button type="primary">
-          <Link to="/client/new">Novo Cliente
+          <Link to="/atapa/new">Nova Etapa
           </Link>
           </Button>
           </FormItem>
          
         </Form>
-        <Table className="tableClient"
+        <Table className="tableEtapa"
          rowKey={record => record.id} 
-         dataSource={this.state.clients}
+         dataSource={this.state.etapas}
          rowClassName={() => 'editable-row'}
          bordered
           {...this.state.tableConfig} columns={columns}  />

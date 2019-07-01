@@ -192,6 +192,27 @@ export function createClient(clientData) {
     });
 }
 
+export function createPersonagem(personagemData) {
+    return request({
+        url: API_BASE_URL + "/personagens/create",
+        method: 'POST',
+        body: JSON.stringify(personagemData)         
+    });
+}
+export function createNivel(nivelData) {
+    return request({
+        url: API_BASE_URL + "/niveis/create",
+        method: 'POST',
+        body: JSON.stringify(nivelData)         
+    });
+}
+export function createDica(dicaData) {
+    return request({
+        url: API_BASE_URL + "/dicas/create",
+        method: 'POST',
+        body: JSON.stringify(dicaData)         
+    });
+}
 export function editClient(clientData) {
     return request({
         url: API_BASE_URL + "/clients",
@@ -199,6 +220,31 @@ export function editClient(clientData) {
         body: JSON.stringify(clientData)         
     });
 }
+
+export function editPersonagem(personagemData) {
+    return request({
+        url: API_BASE_URL + "/personagens",
+        method: 'PUT',
+        body: JSON.stringify(personagemData)         
+    });
+}
+
+export function editNivel(nivelData) {
+    return request({
+        url: API_BASE_URL + "/niveis",
+        method: 'PUT',
+        body: JSON.stringify(nivelData)         
+    });
+}
+
+export function editDica(dicaData) {
+    return request({
+        url: API_BASE_URL + "/dicas",
+        method: 'PUT',
+        body: JSON.stringify(dicaData)         
+    });
+}
+
 
 export function castVote(voteData) {
     return request({

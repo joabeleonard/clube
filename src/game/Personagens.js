@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {notification, Form, Input, InputNumber, Button, Radio, Table,Popconfirm , Icon} from 'antd'
-import './Cliente.css';
+import './Personagem.css';
 import {
   Link,
   withRouter

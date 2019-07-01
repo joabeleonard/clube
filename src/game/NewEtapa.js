@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { createClient, editClient } from '../util/APIUtils';
 import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
-import './NewPoll.css';  
+import './NewPersonagem.css';  
 import { Form, Input, Button, Icon, Select, Col, notification, Tooltip, Radio, DatePicker } from 'antd';
 import moment from 'moment';
 import { formatDateTime } from '../util/Helpers';

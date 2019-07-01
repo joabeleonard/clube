@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import {notification, Form, Input, InputNumber, Button, Radio, Table,Popconfirm , Icon} from 'antd'
-import './Cliente.css';
+import './Dica.css';
 import {
   Link,
   withRouter
 } from 'react-router-dom';
 import { CLIENT_LIST_SIZE } from '../constants';
-import { getAllClients, removeClient} from '../util/APIUtils';
+import { getAllDicas} from '../util/APIUtils';
 import LoadingIndicator  from '../common/LoadingIndicator';
 import  { Redirect } from 'react-router-dom'
 
@@ -31,12 +31,12 @@ class Dicas extends Component{
         formLayout: 'vertical',
             search: ''
     };
-    this.loadExtratoList = this.loadExtratoList.bind(this);
+    this.loadDicaList = this.loadDicaList.bind(this);
 }
 
-loadExtratoList(page = 0, size = CLIENT_LIST_SIZE) {
+loadDicaList(page = 0, size = CLIENT_LIST_SIZE) {
   let promise;
-  promise = getAllClients(page, size);
+  promise = getAllDicas(page, size);
 
   if(!promise) {
       return;
@@ -48,20 +48,19 @@ loadExtratoList(page = 0, size = CLIENT_LIST_SIZE) {
 
   promise            
   .then(response => {
-      const clients = this.state.clients.slice();
+      const dicas = this.state.dicas.slice();
       
       this.setState({
-          clients: clients.concat(response.content),
+          dicas: dicas.concat(response.content),
           page: response.page,
           size: response.size,
           totalElements: response.totalElements,
           totalPages: response.totalPages,
           last: response.last,
           isLoading: false,
-          editableClient: false
+          editableDica: false
       })
 
-      console.log(this.state.clients);
   }).catch(error => {
       this.setState({
           isLoading: false
@@ -71,58 +70,18 @@ loadExtratoList(page = 0, size = CLIENT_LIST_SIZE) {
 }
  
 componentDidMount() {
-  this.loadClientList();
+  this.loadDicaList();
 }
 
-handleUpdateClient = (client) =>{
+handleUpdateDica = (dica) =>{
   
    this.setState({
-    client:client,
-    editableClient:true
+    dica:dica,
+    editableDica:true
   });
 }
 
-handleDelete = (id) => {
 
-  const dataSource = [...this.state.clients];
-  
-  let promise;
-  promise = removeClient(id);
-
-  if(!promise) {
-      return;
-  }
-
-  this.setState({
-      isLoading: true
-  });
-  
-  promise            
-  .then(response => {
-    console.log(response);
-    this.setState({ clients: dataSource.filter(item => item.id !== id) });
-
-    notification.success({
-      message: 'Boon',
-      description: "Cliente Removido com sucesso.",
-    });
-
-    this.setState({
-      isLoading: false
-  });
-  }).catch(error => {
-    console.log(error);
-
-        notification.error({
-          message: 'Boon',
-          description: 'Ocorreu um erro. Por favor tente novamente!'
-      }); 
-      this.setState({
-          isLoading: false
-      });
-  });  
-   
-}
 
 render(){
 
@@ -130,47 +89,42 @@ render(){
             return <LoadingIndicator />;
         }
 
-        if (this.state.editableClient === true) {
+        if (this.state.editableDica === true) {
           return <Redirect to={{
-            pathname: '/client/new',
-            client: {...this.state.client }
+            pathname: '/dica/new',
+            dica: {...this.state.dica }
           }} />
         }
 
         const columns = [{
-            title: 'Nome',
-            dataIndex: 'user.name',
-            key: 'nome',
+            title: 'Nivel',
+            dataIndex: 'nivel.nome',
+            key: 'nivel',
           },{
-            title: 'CPF',
-            dataIndex: 'cpf',
-            key: 'cpf',
+            title: 'Local',
+            dataIndex: 'local',
+            key: 'local',
           }, {
-            title: 'Pontos - Experiência',
-            dataIndex: 'pontosExperiencia',
-            key: 'pontosExperiencia',
+            title: 'Tempo De Locomoção',
+            dataIndex: 'tempoDeLocomocao',
+            key: 'tempoDeLocomocao',
           }, {
-            title: 'Pontos',
-            dataIndex: 'pontos',
-            key: 'pontos',
+            title: 'Ordem Dica',
+            dataIndex: 'ordemDica',
+            key: 'ordemDica',
           }, {
             title: 'Ações',
             key: 'action',
             render: (text, record) => (
               <span>
-                <a onClick={()=>this.handleUpdateClient(record)}><Icon type="edit" /></a>
+                <a onClick={()=>this.handleUpdateDica(record)}><Icon type="edit" /></a>
                 <span className="ant-divider" />
-                
-              
-            <Popconfirm title="Comfima exclusão?" onConfirm={() => this.handleDelete(record.id)}>
-              <a href="javascript:;"><Icon type="delete" /></a>
-            </Popconfirm>
           
               </span>
             ),
           }];
-        return  <div className="new-client-container">
-         <h1 className="page-title">Gerenciamento de Clientes</h1>
+        return  <div className="new-Dica-container">
+         <h1 className="page-title">Gerenciamento de Dicas - Games</h1>
          <Form  layout="inline">
          
           <FormItem >
@@ -183,15 +137,15 @@ render(){
           </FormItem>
           <FormItem >
           <Button type="primary">
-          <Link to="/client/new">Novo Cliente
+          <Link to="/dica/new">Nova Dica
           </Link>
           </Button>
           </FormItem>
          
         </Form>
-        <Table className="tableClient"
+        <Table className="tableDica"
          rowKey={record => record.id} 
-         dataSource={this.state.clients}
+         dataSource={this.state.dica}
          rowClassName={() => 'editable-row'}
          bordered
           {...this.state.tableConfig} columns={columns}  />
