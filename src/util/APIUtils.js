@@ -194,21 +194,21 @@ export function createClient(clientData) {
 
 export function createPersonagem(personagemData) {
     return request({
-        url: API_BASE_URL + "/personagens/create",
+        url: API_BASE_URL + "/personagens",
         method: 'POST',
         body: JSON.stringify(personagemData)         
     });
 }
 export function createNivel(nivelData) {
     return request({
-        url: API_BASE_URL + "/niveis/create",
+        url: API_BASE_URL + "/niveis",
         method: 'POST',
         body: JSON.stringify(nivelData)         
     });
 }
 export function createDica(dicaData) {
     return request({
-        url: API_BASE_URL + "/dicas/create",
+        url: API_BASE_URL + "/dicas",
         method: 'POST',
         body: JSON.stringify(dicaData)         
     });

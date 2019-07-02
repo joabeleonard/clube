@@ -161,11 +161,7 @@ class NewDica extends Component {
                                value = {this.state.quemEstaComADica}
                                onChange={this.handleInputChange} />         
                         </FormItem>
-                        <FormItem>
-                              <Input placeholder="RG" name="rg"
-                               value = {this.state.rg}
-                               onChange={this.handleInputChange} />         
-                        </FormItem>
+                       
                         <FormItem>
                         <Input placeholder="Dica" name="dica"
                                value = {this.state.dica}
@@ -182,44 +178,7 @@ class NewDica extends Component {
                         </FormItem>
                      
                     
-                        <FormItem>
-                              <Input placeholder="Bandeira" name="bandeira"
-                               value = {this.state.bandeira}
-                               onChange={this.handleInputChange} />         
-                        </FormItem>
-                        <FormItem>
-                              <Input placeholder="Nome do Titulas" name="nomeTitular"
-                               value = {this.state.nomeTitular}
-                               onChange={this.handleInputChange} />         
-                        </FormItem>
-                        <FormItem>
-                              <Input placeholder="Número Cartão" name="numeroCartao"
-                               value = {this.state.numeroCartao}
-                               onChange={this.handleInputChange} />         
-                        </FormItem>
-                        <FormItem>
-                              <Input placeholder="Data de Validade" name="dataValidade"
-                               value = {this.state.dataValidade}
-                               onChange={this.handleInputChange} />         
-                        </FormItem>  <FormItem>
-                              <Input placeholder="Código de Segurança" name="codigoSeguranca"
-                               value = {this.state.codigoSeguranca}
-                               onChange={this.handleInputChange} />         
-                        </FormItem>
-                        <FormItem>
-                            <Input type="password" placeholder="Senha" name="senha"
-                            onChange={this.handleInputChange} 
-                            prefix={<Icon type="lock" />}/>
-                        </FormItem>
-                             <FormItem>
-                             <Input placeholder="Código de Indicação" name="codigoIndicacao"
-                               value = {this.state.codigoIndicacao}
-                               onChange={this.handleInputChange} />  
-                            
-                         </FormItem>
                         
-                     
-                       
                         <FormItem className="poll-form-row">
                             <Button type="primary" 
                                 htmlType="submit" 
