@@ -20,7 +20,7 @@ class Personagens extends Component{
   constructor(props) {
     super(props);
     this.state = {
-        personagens: null,
+        personagens: [],
         page: 0,
         size: 10,
         totalElements: 0,
@@ -48,7 +48,7 @@ loadPersonagensList(page = 0, size = CLIENT_LIST_SIZE) {
   promise            
   .then(response => {
       const personagens = this.state.personagens.slice();
-      
+      console.log("dshjxnbjhbjh");
       this.setState({
           personagens: personagens.concat(response.content),
           page: response.page,
@@ -57,8 +57,7 @@ loadPersonagensList(page = 0, size = CLIENT_LIST_SIZE) {
           totalPages: response.totalPages,
           last: response.last,
           isLoading: false,
-          editablePersonagem: false,
-          editablePersonagem: null
+          editablePersonagem: false
       })
 
   }).catch(error => {
@@ -73,7 +72,7 @@ componentDidMount() {
   this.loadPersonagensList();
 }
 
-handleUpdateClient = (personagem) =>{
+handleUpdatePersonagem = (personagem) =>{
   
    this.setState({
     personagem:personagem,
@@ -87,35 +86,31 @@ render(){
             return <LoadingIndicator />;
         }
 
-        if (this.state.editableClient === true) {
+        if (this.state.editablePersonagem === true) {
           return <Redirect to={{
-            pathname: '/client/new',
-            client: {...this.state.client }
+            pathname: '/personagem/new',
+            personagem: {...this.state.personagem }
           }} />
         }
 
         const columns = [{
             title: 'Nome',
-            dataIndex: 'user.name',
+            dataIndex: 'nome',
             key: 'nome',
           },{
-            title: 'CPF',
-            dataIndex: 'cpf',
-            key: 'cpf',
+            title: 'Descrição',
+            dataIndex: 'descricao',
+            key: 'descricao',
           }, {
-            title: 'Pontos - Experiência',
-            dataIndex: 'pontosExperiencia',
-            key: 'pontosExperiencia',
-          }, {
-            title: 'Pontos',
-            dataIndex: 'pontos',
-            key: 'pontos',
+            title: 'Robbies',
+            dataIndex: 'hobbie',
+            key: 'hobbie',
           }, {
             title: 'Ações',
             key: 'action',
             render: (text, record) => (
               <span>
-                <a onClick={()=>this.handleUpdateClient(record)}><Icon type="edit" /></a>
+                <a onClick={()=>this.handleUpdatePersonagem(record)}><Icon type="edit" /></a>
           
               </span>
             ),

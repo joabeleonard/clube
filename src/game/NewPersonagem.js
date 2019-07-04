@@ -28,7 +28,7 @@ class NewPersonagem extends Component {
             this.state = {
                 nome: this.props.location.personagem.nome,
                 descricao: this.props.location.personagem.descricao,
-                hobbie: this.props.location.client.hobbie
+                hobbie: this.props.location.personagem.hobbie
             };
         }
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -142,11 +142,13 @@ class NewPersonagem extends Component {
 
                          <FormItem>
                          <Input placeholder="Nome" name="nome"
+                         value = {this.state.nome}
                           onChange={this.handleInputChange} 
                           />
                          </FormItem>
                          <FormItem>
                               <Input placeholder="Descricao" name="descricao"
+                               value = {this.state.descricao}
                                onChange={this.handleInputChange} />         
                         </FormItem>
                         <FormItem>
