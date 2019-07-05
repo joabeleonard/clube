@@ -104,8 +104,7 @@ class NewPoll extends Component {
     }
 
     loadEmpresasList(){
-
-        
+  
         let promise;
            promise = getAllEmpresas();
          

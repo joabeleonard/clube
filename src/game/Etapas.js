@@ -99,20 +99,24 @@ render(){
 
         const columns = [{
             title: 'Nome',
-            dataIndex: 'user.name',
+            dataIndex: 'nome',
             key: 'nome',
           },{
-            title: 'CPF',
-            dataIndex: 'cpf',
-            key: 'cpf',
+            title: 'Descrição',
+            dataIndex: 'descricao',
+            key: 'descricao',
           }, {
-            title: 'Pontos - Experiência',
-            dataIndex: 'pontosExperiencia',
-            key: 'pontosExperiencia',
+            title: 'Missão',
+            dataIndex: 'missao',
+            key: 'missao',
+          },{
+            title: 'Personagem',
+            dataIndex: 'personagem.nome',
+            key: 'personagem',
           }, {
-            title: 'Pontos',
-            dataIndex: 'pontos',
-            key: 'pontos',
+            title: 'Ordem',
+            dataIndex: 'ordemNivel',
+            key: 'ordemNivel',
           }, {
             title: 'Ações',
             key: 'action',
@@ -138,7 +142,7 @@ render(){
           </FormItem>
           <FormItem >
           <Button type="primary">
-          <Link to="/atapa/new">Nova Etapa
+          <Link to="/etapa/new">Nova Etapa
           </Link>
           </Button>
           </FormItem>

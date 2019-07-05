@@ -172,7 +172,7 @@ class NewDica extends Component {
                                 placeholder="Selecione  nivel"
                                 style={{ width: 120 }} name="Nível"
                                 onChange={this.handleNivelChange}>
-                                {this.state.niveis.map(empresa => <Option key={empresa.id} >{empresa.user.name}</Option>)}
+                                {this.state.niveis.map(nivel => <Option key={nivel.id} >{nivel.nome}</Option>)}
                             </Select>
                        
                         </FormItem>
