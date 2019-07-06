@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createClient, editNivel, getAllPersonagens, createNivel } from '../util/APIUtils';
+import {  editNivel, getAllPersonagens, createNivel } from '../util/APIUtils';
 import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
 import './NewPersonagem.css';  
 import { Form, Input, Button, Icon, Select, Col, notification, Tooltip, Radio, DatePicker } from 'antd';
@@ -43,7 +43,6 @@ class NewEtapa extends Component {
         this.handlePersonagemChange = this.handlePersonagemChange.bind(this);
 
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleDatePickerChange = this.handleDatePickerChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -117,8 +116,7 @@ class NewEtapa extends Component {
                 missao: this.state.missao,
                 resposta:this.state.resposta,
                 premio:this.state.premio,
-                ordemNivel:this.state.ordemNivel,
-                personagem:this.state.personagem
+                ordemNivel:this.state.ordemNivel
             };
 
             promise = editNivel(etapaData)
@@ -131,7 +129,8 @@ class NewEtapa extends Component {
                 resposta:this.state.resposta,
                 premio:this.state.premio,
                 ordemNivel:this.state.ordemNivel,
-                personagem:this.state.personagem};
+                personagemId:this.state.personagemId};
+                console.log(etapaData);
             promise =  createNivel(etapaData);
         }
 

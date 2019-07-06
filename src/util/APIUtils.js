@@ -58,7 +58,7 @@ export function getAllEtapas(page, size) {
     size = size || CLIENT_LIST_SIZE;
 
     return request({
-        url: API_BASE_URL + "/etapas?page=" + page + "&size=" + size,
+        url: API_BASE_URL + "/nivel?page=" + page + "&size=" + size,
         method: 'GET'
     });
 }
@@ -201,7 +201,7 @@ export function createPersonagem(personagemData) {
 }
 export function createNivel(nivelData) {
     return request({
-        url: API_BASE_URL + "/niveis",
+        url: API_BASE_URL + "/nivel",
         method: 'POST',
         body: JSON.stringify(nivelData)         
     });
