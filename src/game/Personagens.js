@@ -48,7 +48,6 @@ loadPersonagensList(page = 0, size = CLIENT_LIST_SIZE) {
   promise            
   .then(response => {
       const personagens = this.state.personagens.slice();
-      console.log("dshjxnbjhbjh");
       this.setState({
           personagens: personagens.concat(response.content),
           page: response.page,

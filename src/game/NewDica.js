@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createDica, editDica } from '../util/APIUtils';
+import { createDica, editDica, getAllEtapas } from '../util/APIUtils';
 import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
 import './NewDica.css';  
 import { Form, Input, Button, Icon, Select, Col, notification, Tooltip, Radio, DatePicker } from 'antd';
@@ -30,8 +30,10 @@ class NewDica extends Component {
         if(this.props.location.dica){
             console.log(this.props.location.dica);
             this.state = {
+                niveis:[],
+                nivelId: null,
                 local: this.props.location.dica.local,
-                tempoDeLocomocao: this.props.location.dica.email,
+                tempoDeLocomocao: this.props.location.dica.tempoDeLocomocao,
                 quemEstaComADica: this.props.location.dica.quemEstaComADica,
                 dica: this.props.location.dica.dica,
                 ordemDica:this.props.location.dica.ordemDica,
@@ -43,6 +45,42 @@ class NewDica extends Component {
 
     }
 
+    componentDidMount() {
+        this.loadNiveisList();
+    }
+
+    loadNiveisList(){
+  
+        let promise;
+           promise = getAllEtapas();
+         
+           if(!promise) {
+               return;
+           }
+         
+           this.setState({
+               isLoading: true
+           });
+           promise            
+           .then(response => {
+            console.log(response);
+               const niveis = this.state.niveis.slice();
+               this.setState({
+                niveis: response.content,
+                   isLoading: false
+               })
+   
+              
+           }).catch(error => {
+               console.log(error);
+               this.setState({
+                   isLoading: false
+               })
+           });  
+           
+         }
+   
+   
   handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
@@ -67,11 +105,11 @@ class NewDica extends Component {
                 local:this.state.local,
                 tempoDeLocomocao: this.state.tempoDeLocomocao,
                 quemEstaComADica: this.state.quemEstaComADica,
-                dica: this.state.email,
+                dica: this.state.dica,
                 id:this.props.location.dica.id,
                 nivelGame:this.state.nivelGame,
                 ordemDica:this.state.ordemDica,
-               
+                nivelId:this.state.nivelId
             };
 
             promise = editDica(dicaData)
@@ -81,9 +119,10 @@ class NewDica extends Component {
                 local:this.state.local,
                 tempoDeLocomocao: this.state.tempoDeLocomocao,
                 quemEstaComADica: this.state.quemEstaComADica,
-                dica: this.state.email,
+                dica: this.state.dica,
                 nivelGame:this.state.nivelGame,
                 ordemDica:this.state.ordemDica,
+                nivelId:this.state.nivelId
             };
             promise =  createDica(dicaData);
         }
@@ -149,11 +188,13 @@ class NewDica extends Component {
 
                          <FormItem>
                          <Input placeholder="Local" name="local"
+                         value = {this.state.local}
                           onChange={this.handleInputChange} 
                           />
                          </FormItem>
                          <FormItem>
                               <Input placeholder="Tempo De Locomoção" name="tempoDeLocomocao"
+                              value = {this.state.tempoDeLocomocao}
                                onChange={this.handleInputChange} />         
                         </FormItem>
                         <FormItem>
@@ -165,6 +206,11 @@ class NewDica extends Component {
                         <FormItem>
                         <Input placeholder="Dica" name="dica"
                                value = {this.state.dica}
+                               onChange={this.handleInputChange} />          
+                        </FormItem>
+                        <FormItem>
+                        <Input placeholder="Ordem Dica" name="ordemDica"
+                               value = {this.state.ordemDica}
                                onChange={this.handleInputChange} />          
                         </FormItem>
                         <FormItem>

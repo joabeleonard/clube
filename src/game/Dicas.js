@@ -20,7 +20,7 @@ class Dicas extends Component{
   constructor(props) {
     super(props);
     this.state = {
-        extrato: [],
+        dicas: [],
         page: 0,
         size: 10,
         totalElements: 0,
@@ -49,7 +49,7 @@ loadDicaList(page = 0, size = CLIENT_LIST_SIZE) {
   promise            
   .then(response => {
       const dicas = this.state.dicas.slice();
-      
+      console.log(response.content);
       this.setState({
           dicas: dicas.concat(response.content),
           page: response.page,
@@ -98,7 +98,7 @@ render(){
 
         const columns = [{
             title: 'Nivel',
-            dataIndex: 'nivel.nome',
+            dataIndex: 'nivelGame.nome',
             key: 'nivel',
           },{
             title: 'Local',
@@ -145,7 +145,7 @@ render(){
         </Form>
         <Table className="tableDica"
          rowKey={record => record.id} 
-         dataSource={this.state.dica}
+         dataSource={this.state.dicas}
          rowClassName={() => 'editable-row'}
          bordered
           {...this.state.tableConfig} columns={columns}  />

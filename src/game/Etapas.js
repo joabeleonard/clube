@@ -20,7 +20,7 @@ class Etapas extends Component{
   constructor(props) {
     super(props);
     this.state = {
-        extrato: [],
+        etapas: [],
         page: 0,
         size: 10,
         totalElements: 0,
@@ -49,7 +49,7 @@ loadEtapaList(page = 0, size = CLIENT_LIST_SIZE) {
   promise            
   .then(response => {
       const etapas = this.state.etapas.slice();
-      
+      console.log(response.content);
       this.setState({
           etapas: etapas.concat(response.content),
           page: response.page,

@@ -53,6 +53,14 @@ export function getAllPersonagens(page, size) {
     });
 }
 
+export function getGame() {
+   
+    return request({
+        url: API_BASE_URL + "/dicas/game" ,
+        method: 'GET'
+    });
+}
+
 export function getAllEtapas(page, size) {
     page = page || 0;
     size = size || CLIENT_LIST_SIZE;
@@ -231,7 +239,7 @@ export function editPersonagem(personagemData) {
 
 export function editNivel(nivelData) {
     return request({
-        url: API_BASE_URL + "/niveis",
+        url: API_BASE_URL + "/nivel",
         method: 'PUT',
         body: JSON.stringify(nivelData)         
     });
@@ -296,6 +304,13 @@ export function validarCupom(cupom) {
 export function checkEmailAvailability(email) {
     return request({
         url: API_BASE_URL + "/user/checkEmailAvailability?email=" + email,
+        method: 'GET'
+    });
+}
+
+export function selectPersonagem(idPersonagem) {
+    return request({
+        url: API_BASE_URL + "/personagens/selectPersonagem?idPersonagem=" + idPersonagem,
         method: 'GET'
     });
 }

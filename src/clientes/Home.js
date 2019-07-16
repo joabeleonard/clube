@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {notification, Form,List,Comment, Input, Timeline ,InputNumber, Button, Radio, Table,Popconfirm } from 'antd'
 import { CLIENT_LIST_SIZE } from '../constants';
-import { getRankingDot, getRankingExperiencia} from '../util/APIUtils';
+import { getRankingDot, getRankingExperiencia, getAllPersonagens,selectPersonagem, getGame} from '../util/APIUtils';
 import {
     Link,
     withRouter
@@ -9,6 +9,8 @@ import {
   import LoadingIndicator  from '../common/LoadingIndicator';
   import  { Redirect } from 'react-router-dom'
 import Client from './Cliente';
+import PersonagemHome from './PersonagemHome';
+import NivelHome from './NivelHome';
   const FormItem = Form.Item;
 
   const Search = Input.Search;
@@ -20,8 +22,10 @@ class Home extends Component{
     constructor(props) {
         super(props);
         this.state = {
+            dica:null,
             user: [],
             clients:[],
+            personagens:[],
             page: 0,
             size: 10,
             totalElements: 0,
@@ -32,8 +36,104 @@ class Home extends Component{
             formLayout: 'vertical',
                 search: ''
         };
-        this.loadRanking = this.loadRanking.bind(this);
+        //this.loadRanking = this.loadRanking.bind(this);
+
+        this.loadPersonagens = this.loadPersonagens.bind(this);
+        this.loadGame = this.loadGame.bind(this);
+        
     }
+
+    handleSelectPersonagem(event, idPersonagem) {
+        event.preventDefault();
+        let promise;
+
+        this.setState({
+            isLoading: true
+        });
+       console.log(idPersonagem);
+     
+        promise =  selectPersonagem(idPersonagem);
+        promise
+        .then(response => {
+            notification.success({
+                message: 'Boon',
+                description: "Jogo Iniciado.",
+              });
+              this.setState({
+                dica: response,
+                isLoading: false
+            });
+        }).catch(error => {
+            this.setState({
+                isLoading: false
+            });
+            if(error.status === 401) {
+                this.props.handleLogout('/login', 'error', 'Você deve estar autenticado.');    
+            } else {
+                notification.error({
+                    message: 'Boon',
+                    description: error.message || 'Descupe! Ocorreu um erro. Tente novamente!'
+                });              
+            }
+        });
+    }
+
+
+    loadGame() {
+        let promise;
+        promise = getGame();
+      
+        if(!promise) {
+            return;
+        }
+      
+        this.setState({
+            isLoading: true
+        });
+        promise            
+        .then(response => {
+
+            this.setState({
+                dica: response,
+                isLoading: false
+            })
+        }).catch(error => {
+            this.setState({
+                isLoading: false
+            })
+        });  
+        
+      }
+
+
+    loadPersonagens() {
+        let promise;
+        promise = getAllPersonagens();
+      
+        if(!promise) {
+            return;
+        }
+      
+        this.setState({
+            isLoading: true
+        });
+        promise            
+        .then(response => {
+            const personagens = this.state.personagens.slice();
+
+          console.log(response);
+
+            this.setState({
+                personagens: personagens.concat(response.content),
+                isLoading: false
+            })
+        }).catch(error => {
+            this.setState({
+                isLoading: false
+            })
+        });  
+        
+      }
 
     loadRanking() {
         let promise;
@@ -65,7 +165,9 @@ class Home extends Component{
         
       }
     componentDidMount() {
-        this.loadRanking();
+        //this.loadRanking();
+        this.loadPersonagens();
+        this.loadGame();
       }
 
     handleUpdateEmpresa = (empresa) =>{
@@ -83,16 +185,31 @@ class Home extends Component{
             return <LoadingIndicator />;
         }
 
-        const clientsViews = [];
-        this.state.clients.forEach((client, clientIndex) => {
-            clientsViews.push(<Client 
-                key={client.id} 
-                client={client} />)            
-        });
+        //const clientsViews = [];
+        //this.state.clients.forEach((client, clientIndex) => {
+            //clientsViews.push(<Client 
+                //key={client.id} 
+                //client={client} />)            
+        //});
      
+        const gameViews = [];
+        console.log(this.state.dica);
+        if(this.state.dica != null){
+            <NivelHome 
+                    key={this.state.dica.nivelGame.id} 
+                    nivel={this.state.dica.nivelGame} />
+        }else{
+            this.state.personagens.forEach((personagem, personagemIndex) => {
+                gameViews.push(<PersonagemHome 
+                    handleSelectPersonagem={(event) => this.handleSelectPersonagem(event,personagem.id)}
+                    key={personagem.id} 
+                    personagem={personagem} />)            
+            });
+        }
+        
         return  (
             <div className="polls-container">
-            {clientsViews}
+            {gameViews}
           
             </div>
         );

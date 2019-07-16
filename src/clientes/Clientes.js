@@ -74,6 +74,41 @@ componentDidMount() {
   this.loadClientList();
 }
 
+loadClientList(page = 0, size = CLIENT_LIST_SIZE) {
+  let promise;
+  promise = getAllClients(page, size);
+
+  if(!promise) {
+      return;
+  }
+
+  this.setState({
+      isLoading: true
+  });
+
+  promise            
+  .then(response => {
+      const clients = this.state.clients.slice();
+      console.log(response.content);
+      this.setState({
+          clients: clients.concat(response.content),
+          page: response.page,
+          size: response.size,
+          totalElements: response.totalElements,
+          totalPages: response.totalPages,
+          last: response.last,
+          isLoading: false,
+          editableEtapa: false
+      })
+
+      console.log(this.state.etapas);
+  }).catch(error => {
+      this.setState({
+          isLoading: false
+      })
+  });  
+  
+}
 handleUpdateClient = (client) =>{
   
    this.setState({

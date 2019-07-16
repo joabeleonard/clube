@@ -30,7 +30,7 @@ class NewEtapa extends Component {
 
         if(this.props.location.etapa){
             this.state = {
-              
+                personagens: [],
                 nome: this.props.location.etapa.nome,
                 descricao: this.props.location.etapa.descricao,
                 personagem:this.props.location.etapa.personagem,
@@ -116,7 +116,8 @@ class NewEtapa extends Component {
                 missao: this.state.missao,
                 resposta:this.state.resposta,
                 premio:this.state.premio,
-                ordemNivel:this.state.ordemNivel
+                ordemNivel:this.state.ordemNivel,
+                id:this.props.location.etapa.id,
             };
 
             promise = editNivel(etapaData)
@@ -130,7 +131,6 @@ class NewEtapa extends Component {
                 premio:this.state.premio,
                 ordemNivel:this.state.ordemNivel,
                 personagemId:this.state.personagemId};
-                console.log(etapaData);
             promise =  createNivel(etapaData);
         }
 
@@ -144,8 +144,8 @@ class NewEtapa extends Component {
                 message: 'Boon',
                 description: "Niveis Cadastrado com sucesso.",
               });
-console.log(this.props.authenticated);
-            if(this.props.authenticated){
+
+              if(this.props.authenticated){
                 this.props.history.push("/etapas");
             }else{
                 this.props.history.push("/login");
@@ -185,17 +185,19 @@ console.log(this.props.authenticated);
 
         return (
             <div className="new-poll-container">
-                <h1 className="page-title">Cadastrar Cliente</h1>
+                <h1 className="page-title">Cadastrar Etapa (Game)</h1>
                 <div className="new-poll-content">
                     <Form onSubmit={this.handleSubmit} className="create-poll-form">
 
                          <FormItem>
                          <Input placeholder="Nome" name="nome"
+                          value = {this.state.nome}
                           onChange={this.handleInputChange} 
                           />
                          </FormItem>
                          <FormItem>
                               <Input placeholder="Descrição" name="descricao"
+                               value = {this.state.descricao}
                                onChange={this.handleInputChange} />         
                         </FormItem>
                         <FormItem>
@@ -220,7 +222,7 @@ console.log(this.props.authenticated);
                         </FormItem>
                        
                         <FormItem>
-                             <Select
+                             <Select 
                                 placeholder="Selecione  o personagem"
                                 style={{ width: 120 }} name="Personagem"
                                 onChange={this.handlePersonagemChange}>
