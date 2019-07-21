@@ -11,7 +11,9 @@ import {
 import Client from './Cliente';
 import PersonagemHome from './PersonagemHome';
 import NivelHome from './NivelHome';
-  const FormItem = Form.Item;
+import DicaHome from './DicaHome';
+
+const FormItem = Form.Item;
 
   const Search = Input.Search;
 
@@ -34,7 +36,9 @@ class Home extends Component{
             currentVotes: [],
             isLoading: false,
             formLayout: 'vertical',
-                search: ''
+            gameViews : [],
+            visualizarDica: false
+
         };
         //this.loadRanking = this.loadRanking.bind(this);
 
@@ -43,6 +47,10 @@ class Home extends Component{
         
     }
 
+    handleOpenDica(event, dica){
+        this.setState({ visualizarDica: true});
+
+    }
     handleSelectPersonagem(event, idPersonagem) {
         event.preventDefault();
         let promise;
@@ -191,16 +199,23 @@ class Home extends Component{
                 //key={client.id} 
                 //client={client} />)            
         //});
-     
-        const gameViews = [];
-        console.log(this.state.dica);
-        if(this.state.dica != null){
-            <NivelHome 
-                    key={this.state.dica.nivelGame.id} 
-                    nivel={this.state.dica.nivelGame} />
-        }else{
+        this.state.gameViews = [];
+        console.log(this.state.dica != null && !this.visualizarDica);
+
+        if(this.state.visualizarDica ){
+            this.state.gameViews.push(<DicaHome 
+                key={this.state.dica.id}  
+                dica={this.state.dica} />)
+        }
+        if(!this.state.visualizarDica && this.state.dica != null ){
+            this.state.gameViews.push(<NivelHome 
+                    key={this.state.dica.nivelGame.id}  
+                    handleOpenDica={(event) => this.handleOpenDica(event,this.state.dica)}
+                    nivel={this.state.dica.nivelGame} />)
+        }
+        if(this.state.dica == null){
             this.state.personagens.forEach((personagem, personagemIndex) => {
-                gameViews.push(<PersonagemHome 
+                this.state.gameViews.push(<PersonagemHome 
                     handleSelectPersonagem={(event) => this.handleSelectPersonagem(event,personagem.id)}
                     key={personagem.id} 
                     personagem={personagem} />)            
@@ -209,7 +224,7 @@ class Home extends Component{
         
         return  (
             <div className="polls-container">
-            {gameViews}
+            {this.state.gameViews}
           
             </div>
         );

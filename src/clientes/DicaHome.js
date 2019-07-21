@@ -10,7 +10,7 @@ import {selectPersonagem} from '../util/APIUtils';
 import { Radio, Button } from 'antd';
 const RadioGroup = Radio.Group;
 
-class NivelHome extends Component {
+class DicaHome extends Component {
 
     constructor(props) {
         super(props);
@@ -18,11 +18,11 @@ class NivelHome extends Component {
             isLoading: false
         };
 
-        this.handleSelectNivel = this.handleSelectNivel.bind(this);
+        this.handleSelectDica = this.handleSelectDica.bind(this);
 
     }
 
-    handleSelectNivel(event) {
+    handleSelectDica(event) {
         event.preventDefault();
         let promise;
 
@@ -65,14 +65,14 @@ class NivelHome extends Component {
                 <div className="poll-header">
                     <div className="poll-creator-info">
                             <Avatar className="poll-creator-avatar" 
-                                style={{ backgroundColor: getAvatarColor(this.props.nivel.nome)}} >
-                                {this.props.nivel.nome[0].toUpperCase()}
+                                style={{ backgroundColor: getAvatarColor(this.props.dica.local)}} >
+                                {this.props.dica.local[0].toUpperCase()}
                             </Avatar>
                             <span className="poll-creator-name">
-                                Descrição:{this.props.nivel.descricao}
+                                Tempo de Locomoção:{this.props.dica.tempoDeLocomocao}
                             </span>
                             <span className="poll-creator-username">
-                                Missão:{this.props.nivel.missao}
+                                Dica:{this.props.dica.dica}
                             </span>
                             
                     </div>
@@ -88,4 +88,4 @@ class NivelHome extends Component {
     }
 }
 
-export default NivelHome;
+export default DicaHome;
