@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {notification, Form,List,Comment, Input, Timeline ,InputNumber, Button, Radio, Table,Popconfirm } from 'antd'
 import { CLIENT_LIST_SIZE } from '../constants';
-import { getRankingDot, getRankingExperiencia, getAllPersonagens,selectPersonagem, getGame} from '../util/APIUtils';
+import { getRankingDot,proximoNivel,proximaDica, getRankingExperiencia, getAllPersonagens,selectPersonagem, getGame} from '../util/APIUtils';
 import {
     Link,
     withRouter
@@ -37,11 +37,13 @@ class Home extends Component{
             isLoading: false,
             formLayout: 'vertical',
             gameViews : [],
-            visualizarDica: false
+            visualizarDica: false,
+            tentativaResposta: ''
 
         };
         //this.loadRanking = this.loadRanking.bind(this);
 
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.loadPersonagens = this.loadPersonagens.bind(this);
         this.loadGame = this.loadGame.bind(this);
         
@@ -49,8 +51,92 @@ class Home extends Component{
 
     handleOpenDica(event, dica){
         this.setState({ visualizarDica: true});
+    }
+
+    handleProximaDica(event){
+        event.preventDefault();
+        
+        this.setState({
+            isLoading: true
+        });
+
+        let promise;
+        
+            promise = proximaDica(this.state.dica.id);
+            promise.then(response => {
+
+                this.setState({
+                    dica: response,
+                    isLoading: false
+                });
+            notification.success({
+                message: 'Boon',
+                description: "Nova Dica.",
+              });
+                       
+        }).catch(error => {
+
+            this.setState({
+                isLoading: false
+            });
+            notification.error({
+                message: 'Boon',
+                description: error.message || 'Sorry! Something went wrong. Please try again!'
+            }); 
+        });
+      
+    }
+
+    handleOpenNivel(event){
+        this.setState({ visualizarDica: false});
 
     }
+    
+    handleSubmitResposta(event) {
+        event.preventDefault();
+        
+        this.setState({
+            isLoading: true
+        });
+
+        let promise;
+        if(this.state.tentativaResposta == this.state.dica.nivelGame.resposta){
+            promise = proximoNivel(this.state.dica.nivel.id);
+            promise.then(response => {
+
+                this.setState({
+                    dica: response,
+                    isLoading: false
+                });
+            notification.success({
+                message: 'Boon',
+                description: "Nivel alterado com sucesso.",
+              });
+                       
+        }).catch(error => {
+
+            this.setState({
+                isLoading: false
+            });
+            notification.error({
+                message: 'Boon',
+                description: error.message || 'Sorry! Something went wrong. Please try again!'
+            }); 
+        });
+        }else{
+
+            this.setState({
+                isLoading: false
+            });
+            notification.success({
+                message: 'Boon',
+                description: "Resposta errada, vá para o proxima dica.",
+              });   
+        }
+        
+    }
+
+    
     handleSelectPersonagem(event, idPersonagem) {
         event.preventDefault();
         let promise;
@@ -186,7 +272,15 @@ class Home extends Component{
        });
      }
 
-    
+     handleInputChange(event) {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const name = target.name;
+        //console.log(value+ name);
+        this.setState({
+          [name]: value
+        });
+      }
       
     render(){
         if(this.state.isLoading) {
@@ -200,18 +294,22 @@ class Home extends Component{
                 //client={client} />)            
         //});
         this.state.gameViews = [];
-        console.log(this.state.dica != null && !this.visualizarDica);
 
         if(this.state.visualizarDica ){
             this.state.gameViews.push(<DicaHome 
+                handleOpenNivel= {(event) => this.handleOpenNivel(event)}
                 key={this.state.dica.id}  
                 dica={this.state.dica} />)
         }
         if(!this.state.visualizarDica && this.state.dica != null ){
             this.state.gameViews.push(<NivelHome 
-                    key={this.state.dica.nivelGame.id}  
+                    key={this.state.dica.nivelGame.id} 
+                    handleProximaDica={(event) => this.handleProximaDica(event)}
                     handleOpenDica={(event) => this.handleOpenDica(event,this.state.dica)}
-                    nivel={this.state.dica.nivelGame} />)
+                    handleInputChange={(event) => this.handleInputChange(event)}
+                    handleSubmitResposta={(event) => this.handleSubmitResposta(event)}
+                    nivel={this.state.dica.nivelGame} 
+                    tentativaResposta={this.state.tentativaResposta}/>)
         }
         if(this.state.dica == null){
             this.state.personagens.forEach((personagem, personagemIndex) => {

@@ -80,7 +80,7 @@ class DicaHome extends Component {
                 </div>
 
                  <div className="poll-footer">
-                  <Button className="vote-button"  onClick={this.props.handleOpenDica}>Continuar</Button>
+                  <Button className="vote-button"  onClick={this.props.handleOpenNivel}>Voltar</Button>
                   
                 </div>         
             </div>

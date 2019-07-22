@@ -153,6 +153,19 @@ export function createEmpresa(data) {
     });
 }
 
+export function proximaDica(id) {
+    return request({
+        url: API_BASE_URL + "/dicas/proximaDica?id="+id,
+        method: 'get'         
+    });
+}
+export function proximoNivel(id) {
+    return request({
+        url: API_BASE_URL + "/nivel/proximoNivel?id="+id,
+        method: 'get'         
+    });
+}
+
 export function createCupom(empresa, cliente) {
     return request({
         url: API_BASE_URL + "/cupom/generate?empresa=" + empresa+ "&cliente="+cliente,
