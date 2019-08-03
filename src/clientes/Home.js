@@ -100,8 +100,9 @@ class Home extends Component{
         });
 
         let promise;
+        console.log(this.state);
         if(this.state.tentativaResposta == this.state.dica.nivelGame.resposta){
-            promise = proximoNivel(this.state.dica.nivel.id);
+            promise = proximoNivel(this.state.dica.nivelGame.id);
             promise.then(response => {
 
                 this.setState({
@@ -186,6 +187,7 @@ class Home extends Component{
         });
         promise            
         .then(response => {
+            console.log(response);
 
             this.setState({
                 dica: response,
@@ -214,8 +216,6 @@ class Home extends Component{
         promise            
         .then(response => {
             const personagens = this.state.personagens.slice();
-
-          console.log(response);
 
             this.setState({
                 personagens: personagens.concat(response.content),
